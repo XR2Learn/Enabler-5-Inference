@@ -1,1 +1,17 @@
 version: '3'
+services:
+  emotion-classification-audio:
+    image: some.registry.com/xr2learn-enablers/ed-classification-audio:latest
+    build:
+      context: 'Emotion_Classification/Emotion_Classification_Audio_Modality'
+      dockerfile: 'Dockerfile'
+    volumes:
+      - "./Emotion_Classification/Emotion_Classification_Audio_Modality:/app"
+      - "./datasets:/app/datasets"
+      - "./outputs:/app/outputs"
+      - "./configuration.json:/app/configuration.json"
+    working_dir: /app
+    environment:
+      - KEY=${KEY}
+    #    entrypoint: /bin/sh -c
+    command: python emotion_classification_audio_modality/predict.py
