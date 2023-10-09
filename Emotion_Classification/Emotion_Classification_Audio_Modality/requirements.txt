@@ -1,0 +1,2 @@
+python-decouple==3.6
+-e file:./#egg=emotion_classification_audio_modality
