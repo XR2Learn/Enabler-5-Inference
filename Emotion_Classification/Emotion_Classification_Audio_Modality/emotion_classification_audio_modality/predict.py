@@ -62,9 +62,8 @@ def predict_and_save(model, csv_path, out_path):
     evaluate_predictions(meta_data['labels'],all_predictions)
 
 def evaluate_predictions(gt,prediction):
-    print(accuracy_score(gt,prediction))
+    #print(accuracy_score(gt,prediction))
     print(classification_report(gt,prediction))
-    pass
 
 
 
