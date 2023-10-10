@@ -15,3 +15,19 @@ services:
       - KEY=${KEY}
     #    entrypoint: /bin/sh -c
     command: python emotion_classification_audio_modality/predict.py
+
+  fusion-layer:
+    image: some.registry.com/xr2learn-enablers/fusion-layer:latest
+    build:
+      context: 'Multimodal_Fusion/Multimodal_Fusion_Layer'
+      dockerfile: 'Dockerfile'
+    volumes:
+      - "./Multimodal_Fusion/Multimodal_Fusion_Layer:/app"
+      - "./datasets:/app/datasets"
+      - "./outputs:/app/outputs"
+      - "./configuration.json:/app/configuration.json"
+    working_dir: /app
+    environment:
+      - KEY=${KEY}
+    #    entrypoint: /bin/sh -c
+    command: python multimodal_fusion_layer/predict.py
