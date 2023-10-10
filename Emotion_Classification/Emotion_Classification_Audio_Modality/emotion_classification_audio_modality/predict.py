@@ -1,5 +1,5 @@
 # Write Python code here
-from emotion_classification_audio_modality.conf import DATASETS_FOLDER, OUTPUTS_FOLDER, PATH_CUSTOM_SETTINGS
+from conf import DATASETS_FOLDER, OUTPUTS_FOLDER, PATH_CUSTOM_SETTINGS
 
 
 def testing_component():
