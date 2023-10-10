@@ -1,6 +1,6 @@
-# Multimodal Fusion Component
+# (Multimodal) Emotion Detection Evaluation
 
-Component to combine multiple modalities predictions into a single final prediction.
+Component to generate evaluation metrics based on prediction and true values of a test set.
 
 `Input`: CSV files with predicted emotions labels + timestamp.
 

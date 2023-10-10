@@ -31,3 +31,19 @@ services:
       - KEY=${KEY}
     #    entrypoint: /bin/sh -c
     command: python multimodal_fusion_layer/predict.py
+
+  ed-evaluation:
+    image: some.registry.com/xr2learn-enablers/ed-evaluation:latest
+    build:
+      context: 'ED_Evaluation/ED_Evaluation'
+      dockerfile: 'Dockerfile'
+    volumes:
+      - "./ED_Evaluation/ED_Evaluation:/app"
+      - "./datasets:/app/datasets"
+      - "./outputs:/app/outputs"
+      - "./configuration.json:/app/configuration.json"
+    working_dir: /app
+    environment:
+      - KEY=${KEY}
+    #    entrypoint: /bin/sh -c
+    command: python ed_evaluation/evaluate.py
