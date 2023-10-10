@@ -10,6 +10,8 @@ from utils.init_utils import (init_encoder)
 from classifiers.linear import LinearClassifier
 from classification_model import classification_model
 
+from sklearn.metrics import accuracy_score,classification_report
+
 
 def testing_component():
     print(f'Running Docker for Emotion Classification - Audio Modality')
@@ -57,6 +59,12 @@ def predict_and_save(model, csv_path, out_path):
     meta_data.to_csv(os.path.join(OUTPUTS_FOLDER,'predictions.csv'))
         # print(data_path.split(os.path.sep))
         #np.save(os.path.join(out_path, data_path.split(os.path.sep)[-1]), features.detach().numpy())
+    evaluate_predictions(meta_data['labels'],all_predictions)
+
+def evaluate_predictions(gt,prediction):
+    print(accuracy_score(gt,prediction))
+    print(classification_report(gt,prediction))
+    pass
 
 
 
