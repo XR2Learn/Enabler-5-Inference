@@ -13,7 +13,7 @@ class classification_model(LightningModule):
         super().__init__()
         self.name = 'classification_model'
         self.encoder = encoder
-        self.flatten = torch.nn.Flatten()
+        self.flatten = torch.nn.Flatten(start_dim=0)
         self.classifier = classifier
 
         self.optimizer_name = optimizer_name
@@ -30,6 +30,7 @@ class classification_model(LightningModule):
     def forward(self, x):
         x = self.encoder(x)
         #flatten had to be changed by squeeze
+        x = self.flatten(x)
         x = torch.squeeze(x)
         x = self.classifier(x)
         return x
