@@ -47,7 +47,7 @@ def predict_and_save_full_model(model, csv_path, out_path):
         none
     """
 
-    meta_data = pd.read_csv(os.path.join(OUTPUTS_FOLDER, csv_path))
+    meta_data = pd.read_csv(os.path.join(OUTPUTS_FOLDER, csv_path),index_col=0)
     all_predictions = []
     pathlib.Path(os.path.join(OUTPUTS_FOLDER,f'prediction-{CUSTOM_SETTINGS["encoder_config"]["input_type"]}')).mkdir(parents=True,
                                                                                                           exist_ok=True)
@@ -75,7 +75,7 @@ def predict_and_save_classifier(classifier, csv_path, out_path):
         none
     """
 
-    meta_data = pd.read_csv(os.path.join(OUTPUTS_FOLDER, csv_path))
+    meta_data = pd.read_csv(os.path.join(OUTPUTS_FOLDER, csv_path),index_col=0)
     all_predictions = []
     pathlib.Path(os.path.join(OUTPUTS_FOLDER,f'prediction-{CUSTOM_SETTINGS["encoder_config"]["input_type"]}')).mkdir(parents=True,
                                                                                                           exist_ok=True)
