@@ -7,6 +7,18 @@ import os
 import pathlib
 import json
 
+EMOTIONS_RAVDESS = {1: 'neutral', 2: 'calm', 3: 'happy', 4: 'sad',
+                    5: 'angry', 6: 'fear', 7: 'disgust',
+                    8: 'surprise'}
+EMOTION_INTENSITY_RAVDESS = {1: 'normal', 2: "strong"}
+
+LABEL_TO_ID = {'RAVDESS': {'neutral': 0, 'calm': 1, 'happy': 2, 'sad': 3,
+                           'angry': 4, 'fearful': 5, 'disgust': 6,
+                           'surprised': 7}}
+ID_TO_LABEL = {'RAVDESS': {0:'neutral', 1:'calm',2:'happy',3:'sad',
+                           4:'angry', 5:'fearful', 6:'disgust',
+                           7:'surprised'}}
+
 MAIN_FOLDER_DEFAULT = pathlib.Path(__file__).parent.parent.absolute()
 MAIN_FOLDER = config('MAIN_FOLDER', default=MAIN_FOLDER_DEFAULT)
 outputs_folder = os.path.join(MAIN_FOLDER, 'outputs')
