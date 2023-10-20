@@ -76,7 +76,7 @@ def predict_and_save_classifier(classifier, csv_path, out_path):
     """
 
     meta_data = pd.read_csv(os.path.join(OUTPUTS_FOLDER, csv_path),index_col=0)
-    all_predictions = []
+    #all_predictions = []
     pathlib.Path(os.path.join(OUTPUTS_FOLDER,f'prediction-{CUSTOM_SETTINGS["encoder_config"]["input_type"]}')).mkdir(parents=True,
                                                                                                           exist_ok=True)
     for data_path in tqdm(meta_data['files']):
@@ -85,11 +85,11 @@ def predict_and_save_classifier(classifier, csv_path, out_path):
             os.path.join(OUTPUTS_FOLDER,'SSL_features', data_path).replace('\\', '/'))
         x_tensor = torch.tensor(np.expand_dims(x, axis=0) if len(x.shape) <= 1 else x)
         prediction = classifier(torch.nn.Flatten(start_dim=0)(x_tensor))
-        prediction_label = ID_TO_LABEL['RAVDESS'][torch.argmax(prediction).item()]
+        #prediction_label = ID_TO_LABEL['RAVDESS'][torch.argmax(prediction).item()]
         np.save(os.path.join(OUTPUTS_FOLDER,f'prediction-{CUSTOM_SETTINGS["encoder_config"]["input_type"]}',f"{data_path}"),prediction.detach().numpy())
-        all_predictions.append(prediction_label)
-    meta_data['prediction'] = all_predictions
-    meta_data.to_csv(os.path.join(OUTPUTS_FOLDER,'predictions.csv'))
+        #all_predictions.append(prediction_label)
+    #meta_data['prediction'] = all_predictions
+    #meta_data.to_csv(os.path.join(OUTPUTS_FOLDER,'predictions.csv'))
 
 if __name__ == '__main__':
     predict()
