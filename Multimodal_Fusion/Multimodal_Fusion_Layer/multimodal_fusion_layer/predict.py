@@ -1,19 +1,20 @@
 import os
 import numpy as np
 import pandas as pd
+from tqdm import tqdm
 from conf import DATASETS_FOLDER, OUTPUTS_FOLDER, CUSTOM_SETTINGS,ID_TO_LABEL
 
 
 
 def testing_multimodal_layer():
-    print(f'Running Docker for Multimodal Layer!')
+    #print(f'Running Docker for Multimodal Layer!')
     #modalities = ['eGeMAPs','MFCC']
     #weights = [0.6,0.4]
     modalities = [CUSTOM_SETTINGS["encoder_config"]["input_type"]]
     meta_data = pd.read_csv(os.path.join(OUTPUTS_FOLDER,'test.csv'))
     files = meta_data['files']
     all_predictions = []
-    for f in files:
+    for f in tqdm(files):
         all_predictions_for_file = extract_predictions(modalities,f)
         majority_index = get_majority_voting_index(all_predictions_for_file)
         prediction_label = ID_TO_LABEL['RAVDESS'][majority_index]
