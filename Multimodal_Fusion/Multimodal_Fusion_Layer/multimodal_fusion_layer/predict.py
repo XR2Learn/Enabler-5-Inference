@@ -17,7 +17,7 @@ def testing_multimodal_layer():
         all_predictions_for_file = extract_predictions(modalities,f)
         majority_index = get_majority_voting_index(all_predictions_for_file)
         prediction_label = ID_TO_LABEL['RAVDESS'][majority_index]
-        print(prediction_label)
+        #print(prediction_label)
         all_predictions.append(prediction_label)
     meta_data['prediction'] = all_predictions
     meta_data.to_csv(os.path.join(OUTPUTS_FOLDER,'predictions.csv'))
