@@ -1,2 +1,4 @@
 python-decouple==3.6
+pandas==1.5.3
+numpy<1.28.0,>=1.21.6
 -e file:./#egg=multimodal_fusion_layer
