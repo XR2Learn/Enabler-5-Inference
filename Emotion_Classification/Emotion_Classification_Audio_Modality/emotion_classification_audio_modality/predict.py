@@ -21,21 +21,19 @@ def predict():
     classifier.load_state_dict(
         torch.load(os.path.join(OUTPUTS_FOLDER, 'supervised_training', 'dev_model_classifier.pt')))
     classifier.eval()
-    predict_and_save_classifier(classifier, split_paths['test'], '')
+    predict_and_save(classifier, split_paths['test'])
 
 
-def predict_and_save_classifier(classifier, csv_path, out_path):
+def predict_and_save(classifier, csv_path):
     """
-    generate_and_save : given the encoder, extract the features and save to .npy files
+    Given the classifier, predict emotion and save it to .npy files
 
     Parameters
     ----------
         classifier:
-            the pytorch encoder model to extract features from
+            the pytorch trained classifier model to do inference of emotions
         csv_path: str
-            csv containing the paths to the files for which features have to be extracted and saved
-        out_path: str
-            output path to save the features to
+            path to the csv containing the path files for features to be used to classify emotions
     Returns
     -------
         none
@@ -47,9 +45,8 @@ def predict_and_save_classifier(classifier, csv_path, out_path):
         parents=True,
         exist_ok=True)
     for data_path in tqdm(meta_data['files']):
-        # TODO : find replacement for .replace('\\','/')) to have a seperator that works on all OS
         x = np.load(
-            os.path.join(OUTPUTS_FOLDER, 'SSL_features', data_path).replace('\\', '/'))
+            os.path.join(OUTPUTS_FOLDER, 'SSL_features', data_path))
         x_tensor = torch.tensor(np.expand_dims(x, axis=0) if len(x.shape) <= 1 else x)
         prediction = classifier(torch.nn.Flatten(start_dim=0)(x_tensor))
         np.save(os.path.join(OUTPUTS_FOLDER, f'prediction-{CUSTOM_SETTINGS["encoder_config"]["input_type"]}',
