@@ -28,11 +28,16 @@ def predict_and_save_classifier(classifier, csv_path, out_path):
     """
     generate_and_save : given the encoder, extract the features and save to .npy files
 
-    Args:
-        encoder: the pytorch encoder model to extract features from
-        csv_path: csv containing the paths to the files for which features have to be extracted and saved
-        out_path: output path to save the features to
-    Returns:
+    Parameters
+    ----------
+        classifier:
+            the pytorch encoder model to extract features from
+        csv_path: str
+            csv containing the paths to the files for which features have to be extracted and saved
+        out_path: str
+            output path to save the features to
+    Returns
+    -------
         none
     """
 
