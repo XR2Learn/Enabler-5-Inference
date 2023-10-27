@@ -10,7 +10,6 @@ Component to combine multiple modalities predictions into a single final predict
 
 - Output file with the final prediction is saved in the folder `/outputs/predictions.csv`
 
-
 # Installation (Local Run)
 1. Clone or download the repository
 2. Prepare your virtual environment (e.g. VirtualEnv, Pip env, Conda)
