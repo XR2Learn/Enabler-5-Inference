@@ -5,13 +5,15 @@ Repository containing the components for uni and multimodal classification and e
 - Multimodal Fusion: Component to combine multiple modalities predictions into a single final prediction. 
 - ED Evaluation: Component to evaluate uni or multimodal classification models.
 
-# Dependencies 
+## Dependencies 
 - Docker
 - Python 3.10 
 
-# Quick-start (Docker Image)
+## Quick-start (Docker Image)
 
 `docker compose run --rm <<service-name>>`
 
+## Changelog
+[CHANGELOG.md]
 
-
+[CHANGELOG.md]: https://github.com/um-xr2learn-enablers/XR2Learn-Inference/blob/master/CHANGELOG.md
