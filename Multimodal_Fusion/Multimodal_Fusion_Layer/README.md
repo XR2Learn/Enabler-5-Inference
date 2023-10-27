@@ -2,40 +2,27 @@
 
 Component to combine multiple modalities predictions into a single final prediction.
 
-`Input`: CSV files with predicted emotions labels + timestamp.
+`Input`: .npy file with predicted emotions labels.
 
-- CSV Input file should be in the folder `/datasets/<input_CSV_file.CSV>`
+- Input file should be in the folder `/outputs/prediction-<input-type>/<npy_file>.npy`
 
-`Output`: File with trained weights.
+`Output`: CSV file with the final prediction.
 
-- Output file with trained weights is saved in the folder `/outputs/<file_weights>`
+- Output file with the final prediction is saved in the folder `/outputs/predictions.csv`
 
-# Development
 
-## Development Environment Setup
-
-1. Clone the repository
+# Installation (Local Run)
+1. Clone or download the repository
 2. Prepare your virtual environment (e.g. VirtualEnv, Pip env, Conda)
+3. Install requirements
 
-## Development cycle (simplified version)
-
-1. Crete a new branch to develop the task
-2. Commit to remote to the new branch as needed
-3. After finishing developing test docker image
-4. When is everything done and tested, merge task branch to master branch
-
-## Development Notes
-
-- Which configuration do we need to create this component?
+`pip install -r requirements.txt`
 
 ## Configuration
 
-1. For local run create `configuration.json` file in the same level as `example.configuration.json`
+1. For local run create `configuration.json` file in the same level as `example.configuration.json`.
 
 ## Environment Variables (Env Vars)
 
 1. For local run create `.env` file in the same level as `example.env` to load environment variables.
-2. Add on docker compose the environment variable name under the service `ssl-audio`
-
-# TODO
-    -   restore/save best checkpoint
+2. Add on docker compose the environment variable name under the service name
