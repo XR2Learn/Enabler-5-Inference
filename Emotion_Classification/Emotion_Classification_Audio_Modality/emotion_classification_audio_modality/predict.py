@@ -9,7 +9,7 @@ import torch
 from tqdm import tqdm
 
 from classifiers.linear import LinearClassifier
-from conf import OUTPUTS_FOLDER, CUSTOM_SETTINGS
+from conf import OUTPUTS_FOLDER, CUSTOM_SETTINGS, EXPERIMENT_ID
 
 
 def predict():
@@ -19,7 +19,7 @@ def predict():
         os.path.join(OUTPUTS_FOLDER, CUSTOM_SETTINGS['inference_config']['features']))[0])).size
     classifier = LinearClassifier(features_size, CUSTOM_SETTINGS['dataset_config']['number_of_labels'])
     classifier.load_state_dict(
-        torch.load(os.path.join(OUTPUTS_FOLDER, 'supervised_training', 'dev_model_classifier.pt')))
+        torch.load(os.path.join(OUTPUTS_FOLDER, 'supervised_training', f'{EXPERIMENT_ID}_classifier.pt')))
     classifier.eval()
     predict_and_save(classifier, split_paths['test'])
 
