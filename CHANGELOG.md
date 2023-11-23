@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added 
   - Docker compose receives EXPERIMENT_ID and CONFIG_FILE_PATH as env vars, with default values.
+  - More Documentation.
 
 ## [0.1.0] - 2023 - 10 - 27
 ### Added
