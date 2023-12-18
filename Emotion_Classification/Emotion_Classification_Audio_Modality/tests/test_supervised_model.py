@@ -6,11 +6,11 @@ import unittest
 import torch
 from pytorch_lightning import Trainer
 
-from supervised_audio_modality.classifiers.linear import LinearClassifier
-from supervised_audio_modality.classifiers.mlp import MLPClassifier
-from supervised_audio_modality.encoders.cnn1d import CNN1D
-from supervised_audio_modality.encoders.w2v import Wav2Vec2CNN
-from supervised_audio_modality.classification_model import SupervisedModel
+from emotion_classification_audio_modality.classifiers.linear import LinearClassifier
+from emotion_classification_audio_modality.classifiers.mlp import MLPClassifier
+from emotion_classification_audio_modality.encoders.cnn1d import CNN1D
+from emotion_classification_audio_modality.encoders.w2v import Wav2Vec2CNN
+from emotion_classification_audio_modality.classification_model import SupervisedModel
 
 
 def _init_model(class_constructor, config):
