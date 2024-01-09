@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='multimodal_fusion_layer',
-    version='0.1.1',
+    version='0.2.0',
     description='Multimodal Fusion Layer.',
     author='UM-XR2Learn-Enablers',
     packages=['multimodal_fusion_layer'],
