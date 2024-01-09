@@ -5,8 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-### Added 
-  - Docker compose receives EXPERIMENT_ID and CONFIG_FILE_PATH as env vars, with default values.
+
+## [0.2.0] - 2024 - 01 - 09
+### Added
   - End2End mode: use fine-tuned model (encoder + classifier) to make predictions from pre-processed data
   - Unit tests for audio prediction components and github workflow for automated testing
 
@@ -47,3 +48,4 @@ Example of Categories to use in each release
 [unreleased]: https://github.com/um-xr2learn-enablers/XR2Learn-Inference/compare/v0.1.0...master
 [0.1.0]: https://github.com/um-xr2learn-enablers/XR2Learn-Inference/releases/tag/v0.1.0
 [0.1.1]: https://github.com/um-xr2learn-enablers/XR2Learn-Inference/releases/tag/v0.1.1
+[0.2.0]: https://github.com/um-xr2learn-enablers/XR2Learn-Inference/releases/tag/v0.2.0
