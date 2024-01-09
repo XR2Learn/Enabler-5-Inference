@@ -1,57 +1,73 @@
 # Write Python code here
 import json
 import os
-import pathlib
 
 import numpy as np
-import pandas as pd
 import torch
-from tqdm import tqdm
 
 from classifiers.linear import LinearClassifier
+from classification_model import SupervisedModel
+from inference_functions import predict_and_save
+from utils.init_utils import init_encoder, init_transforms
 from conf import OUTPUTS_FOLDER, CUSTOM_SETTINGS, EXPERIMENT_ID
 
 
 def predict():
     print(json.dumps(CUSTOM_SETTINGS, indent=4))
-    split_paths = {'test': "test.csv"}
-    features_size = np.load(os.path.join(OUTPUTS_FOLDER, CUSTOM_SETTINGS['inference_config']['features'], os.listdir(
-        os.path.join(OUTPUTS_FOLDER, CUSTOM_SETTINGS['inference_config']['features']))[0])).size
-    classifier = LinearClassifier(features_size, CUSTOM_SETTINGS['dataset_config']['number_of_labels'])
-    classifier.load_state_dict(
-        torch.load(os.path.join(OUTPUTS_FOLDER, 'supervised_training', f'{EXPERIMENT_ID}_classifier.pt')))
-    classifier.eval()
-    predict_and_save(classifier, split_paths['test'])
+    split_paths = {"test": "test.csv"}
+    # Initialize models:
+    # mode == features: use SSL features saved to npy and pass them through classifier
+    if CUSTOM_SETTINGS["inference_config"]["mode"] == "features":
+        prefix_path = os.path.join(OUTPUTS_FOLDER, "SSL_features")
+        features_size = np.load(
+            os.path.join(
+                OUTPUTS_FOLDER,
+                CUSTOM_SETTINGS["inference_config"]["features"],
+                os.listdir(os.path.join(OUTPUTS_FOLDER, CUSTOM_SETTINGS["inference_config"]["features"]))[0]
+            )
+        ).size
+        model = LinearClassifier(features_size, CUSTOM_SETTINGS["dataset_config"]["number_of_labels"])
+        model.load_state_dict(
+            torch.load(os.path.join(OUTPUTS_FOLDER, "supervised_training", f"{EXPERIMENT_ID}_classifier.pt")))
+        transforms = None
+    # mode == end-to-end: use fine-tuned model from pre-processed data
+    elif CUSTOM_SETTINGS["inference_config"]["mode"] == "end-to-end":
+        prefix_path = os.path.join(OUTPUTS_FOLDER, CUSTOM_SETTINGS["encoder_config"]["input_type"])
+        supervised_model_checkpoint_path = os.path.join(
+            OUTPUTS_FOLDER,
+            "supervised_training",
+            f"{EXPERIMENT_ID}_model"
+        ) if (
+            "model_path" not in CUSTOM_SETTINGS["inference_config"]
+        ) else CUSTOM_SETTINGS["inference_config"]["model_path"]
+        encoder = init_encoder(model_cfg=CUSTOM_SETTINGS["encoder_config"])
+        classifier = LinearClassifier(encoder.out_size, CUSTOM_SETTINGS["dataset_config"]["number_of_labels"])
+        model = SupervisedModel.load_from_checkpoint(
+            supervised_model_checkpoint_path + ".ckpt",
+            encoder=encoder,
+            classifier=classifier,
+        )
+
+        if "transforms" in CUSTOM_SETTINGS:
+            transforms, _ = init_transforms(CUSTOM_SETTINGS["transforms"])
+        else:
+            transforms = None
+    else:
+        raise ValueError("Unexpected inference mode.")
+
+    model.eval()
+    use_inference_path = "inference_path" in CUSTOM_SETTINGS["inference_config"]
+
+    predict_and_save(
+        model,
+        OUTPUTS_FOLDER,
+        CUSTOM_SETTINGS["encoder_config"]["input_type"],
+        os.path.join(OUTPUTS_FOLDER, split_paths["test"]) if not use_inference_path else None,
+        None if not use_inference_path else CUSTOM_SETTINGS["inference_config"]["inference_path"],
+        prefix_path,
+        transforms
+    )
 
 
-def predict_and_save(classifier, csv_path):
-    """
-    Given the classifier, predict emotion and save it to .npy files
-
-    Parameters
-    ----------
-        classifier:
-            the pytorch trained classifier model to do inference of emotions
-        csv_path: str
-            path to the csv containing the path files for features to be used to classify emotions
-    Returns
-    -------
-        none
-    """
-
-    meta_data = pd.read_csv(os.path.join(OUTPUTS_FOLDER, csv_path), index_col=0)
-    # all_predictions = []
-    pathlib.Path(os.path.join(OUTPUTS_FOLDER, f'prediction-{CUSTOM_SETTINGS["encoder_config"]["input_type"]}')).mkdir(
-        parents=True,
-        exist_ok=True)
-    for data_path in tqdm(meta_data['files']):
-        x = np.load(
-            os.path.join(OUTPUTS_FOLDER, 'SSL_features', data_path))
-        x_tensor = torch.tensor(np.expand_dims(x, axis=0) if len(x.shape) <= 1 else x)
-        prediction = classifier(torch.nn.Flatten(start_dim=0)(x_tensor))
-        np.save(os.path.join(OUTPUTS_FOLDER, f'prediction-{CUSTOM_SETTINGS["encoder_config"]["input_type"]}',
-                             f"{data_path}"), prediction.detach().numpy())
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     predict()

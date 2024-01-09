@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added 
+  - Docker compose receives EXPERIMENT_ID and CONFIG_FILE_PATH as env vars, with default values.
+  - End2End mode: use fine-tuned model (encoder + classifier) to make predictions from pre-processed data
+  - Unit tests for audio prediction components and github workflow for automated testing
+
+### Changed
+  - Inference config structure. Required field: "mode"
 
 ## [0.1.1] - 2023 - 12 - 06
 ### Added 
