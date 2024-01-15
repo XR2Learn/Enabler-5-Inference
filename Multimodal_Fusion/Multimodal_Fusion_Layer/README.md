@@ -10,7 +10,12 @@ Component to combine multiple modalities predictions into a single final predict
 
 - Output file with the final prediction is saved in the folder `/outputs/predictions.csv`
 
+OR
+
+- Publish the predicted emotion to be read by the personalisation tool (Enabler-6)
+
 # Installation (Local Run)
+
 1. Clone or download the repository
 2. Prepare your virtual environment (e.g. VirtualEnv, Pip env, Conda)
 3. Install requirements
@@ -24,4 +29,3 @@ Component to combine multiple modalities predictions into a single final predict
 ## Environment Variables (Env Vars)
 
 1. For local run create `.env` file in the same level as `example.env` to load environment variables.
-2. Add on docker compose the environment variable name under the service name
