@@ -42,6 +42,7 @@ CUSTOM_SETTINGS = {
 }
 path_custom_settings = os.path.join(MAIN_FOLDER, 'configuration.json')
 PATH_CUSTOM_SETTINGS = config('PATH_CUSTOM_SETTINGS', default=path_custom_settings)
+print(PATH_CUSTOM_SETTINGS)
 if os.path.exists(PATH_CUSTOM_SETTINGS):
     with open(PATH_CUSTOM_SETTINGS, 'r') as f:
         CUSTOM_SETTINGS = json.load(f)
