@@ -28,7 +28,10 @@ services:
     working_dir: /app
     environment:
       - EXPERIMENT_ID=${EXPERIMENT_ID:-development-model}
+      - REDIS_HOST=redis
     command: python multimodal_fusion_layer/predict.py
+    depends_on:
+      - redis
 
   ed-evaluation:
     image: some.registry.com/xr2learn-enablers/ed-evaluation:latest
