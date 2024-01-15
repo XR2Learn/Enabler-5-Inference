@@ -49,3 +49,14 @@ services:
     image: redis:7.2.2
     ports:
       - "6379:6379"
+
+  personalisation-tool:
+    image: some.registry.com/xr2learn-enablers/personalisation-tool:latest
+    working_dir: /app
+    environment:
+      - REDIS_HOST=redis
+    command: python personalisation_tool/suggest_activity_level.py
+    depends_on:
+      - redis
+
+

@@ -28,7 +28,10 @@ DATASETS_FOLDER = config('DATASETS_FOLDER', default=datasets_folder)
 DATA_PATH = os.path.join(MAIN_FOLDER_DEFAULT, 'datasets', 'RAVDESS', 'audio_speech_actors_01-24')
 RAVDESS_DATA_PATH = os.path.join(MAIN_FOLDER_DEFAULT, 'datasets', 'RAVDESS')
 
-COMPONENT_OUTPUT_FOLDER = os.path.join(OUTPUTS_FOLDER, 'ssl_training')
+# COMPONENT_OUTPUT_FOLDER = os.path.join(OUTPUTS_FOLDER, 'ssl_training')
+
+REDIS_PORT = config('REDIS_PORT', default='6379')
+REDIS_HOST = config('REDIS_HOST', default='localhost')
 
 # Yet to check if this is really necessary, maybe only for cases where passing values as ENV VARS is too cumbersome
 # e.g. [[1, 'a', ],['789', 'o', 9]] would be very annoying to write and parse.

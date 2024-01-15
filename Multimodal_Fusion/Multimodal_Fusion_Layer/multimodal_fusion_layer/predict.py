@@ -3,8 +3,10 @@ import os
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
+import redis
 
-from conf import OUTPUTS_FOLDER, CUSTOM_SETTINGS, ID_TO_LABEL
+from multimodal_fusion_layer.conf import OUTPUTS_FOLDER, CUSTOM_SETTINGS, ID_TO_LABEL, REDIS_HOST, REDIS_PORT
+from multimodal_fusion_layer.emotion_publisher import EmotionPublisher
 
 
 def multimodal_prediction():
@@ -35,10 +37,13 @@ def write_predicted_emotion(meta_data, modalities):
 def publish_predicted_emotion(meta_data, modalities):
     files = meta_data['files']
     print('Publishing the predicted emotions')
+    redis_cli = redis.Redis(host=REDIS_HOST, port=REDIS_PORT)
+    emotion_publisher = EmotionPublisher(redis_cli)
     for file in files:
         all_predictions_for_file = extract_predictions(modalities, file)
         majority_index = get_majority_voting_index(all_predictions_for_file)
         prediction_label_to_publish = ID_TO_LABEL['RAVDESS'][majority_index]
+        emotion_publisher.publish_emotion(prediction_label_to_publish)
         print(prediction_label_to_publish)
 
 
