@@ -44,3 +44,8 @@ services:
     environment:
       - EXPERIMENT_ID=${EXPERIMENT_ID:-development-model}
     command: python ed_evaluation/evaluate.py
+
+  redis:
+    image: redis:7.2.2
+    ports:
+      - "6379:6379"
