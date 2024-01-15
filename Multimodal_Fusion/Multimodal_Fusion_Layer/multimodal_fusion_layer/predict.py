@@ -5,7 +5,8 @@ import pandas as pd
 from tqdm import tqdm
 import redis
 
-from multimodal_fusion_layer.conf import OUTPUTS_FOLDER, CUSTOM_SETTINGS, ID_TO_LABEL, REDIS_HOST, REDIS_PORT
+from multimodal_fusion_layer.conf import OUTPUTS_FOLDER, CUSTOM_SETTINGS, ID_TO_LABEL, REDIS_HOST, REDIS_PORT, \
+    MAPPING_RAVDESS_TO_THEORY_FLOW_DUMMY
 from multimodal_fusion_layer.emotion_publisher import EmotionPublisher
 
 
@@ -42,7 +43,8 @@ def publish_predicted_emotion(meta_data, modalities):
     for file in files:
         all_predictions_for_file = extract_predictions(modalities, file)
         majority_index = get_majority_voting_index(all_predictions_for_file)
-        prediction_label_to_publish = ID_TO_LABEL['RAVDESS'][majority_index]
+        prediction_label = ID_TO_LABEL['RAVDESS'][majority_index]
+        prediction_label_to_publish = MAPPING_RAVDESS_TO_THEORY_FLOW_DUMMY[prediction_label]
         emotion_publisher.publish_emotion(prediction_label_to_publish)
         print(prediction_label_to_publish)
 

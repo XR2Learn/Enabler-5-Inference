@@ -15,9 +15,15 @@ EMOTION_INTENSITY_RAVDESS = {1: 'normal', 2: "strong"}
 LABEL_TO_ID = {'RAVDESS': {'neutral': 0, 'calm': 1, 'happy': 2, 'sad': 3,
                            'angry': 4, 'fearful': 5, 'disgust': 6,
                            'surprised': 7}}
-ID_TO_LABEL = {'RAVDESS': {0:'neutral', 1:'calm',2:'happy',3:'sad',
-                           4:'angry', 5:'fearful', 6:'disgust',
-                           7:'surprised'}}
+ID_TO_LABEL = {'RAVDESS': {0: 'neutral', 1: 'calm', 2: 'happy', 3: 'sad',
+                           4: 'angry', 5: 'fearful', 6: 'disgust',
+                           7: 'surprised'}}
+
+# A dummy mapping from RAVDESS emotions to the theory of flow
+MAPPING_RAVDESS_TO_THEORY_FLOW_DUMMY = {
+    'neutral': 1, 'calm': 1, 'happy': 1, 'sad': 0,
+    'angry': 2, 'fearful': 2, 'disgust': 0,
+    'surprised': 2}
 
 MAIN_FOLDER_DEFAULT = pathlib.Path(__file__).parent.parent.absolute()
 MAIN_FOLDER = config('MAIN_FOLDER', default=MAIN_FOLDER_DEFAULT)
