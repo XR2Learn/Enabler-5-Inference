@@ -6,7 +6,7 @@ from tqdm import tqdm
 import redis
 
 from multimodal_fusion_layer.conf import OUTPUTS_FOLDER, CUSTOM_SETTINGS, ID_TO_LABEL, REDIS_HOST, REDIS_PORT, \
-    MAPPING_RAVDESS_TO_THEORY_FLOW_DUMMY
+    MAPPING_RAVDESS_TO_THEORY_FLOW_DUMMY, PUBLISHER_ON
 from multimodal_fusion_layer.emotion_publisher import EmotionPublisher
 
 
@@ -16,7 +16,7 @@ def multimodal_prediction():
     modalities = [CUSTOM_SETTINGS["encoder_config"]["input_type"]]
     meta_data = pd.read_csv(os.path.join(OUTPUTS_FOLDER, 'test.csv'))
 
-    if CUSTOM_SETTINGS['inference_config'].get('publisher', False):
+    if PUBLISHER_ON:
         publish_predicted_emotion(meta_data, modalities)
     else:
         write_predicted_emotion(meta_data, modalities)
