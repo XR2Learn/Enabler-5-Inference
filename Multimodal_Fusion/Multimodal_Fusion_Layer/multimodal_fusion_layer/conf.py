@@ -56,4 +56,4 @@ if os.path.exists(PATH_CUSTOM_SETTINGS):
     with open(PATH_CUSTOM_SETTINGS, 'r') as f:
         CUSTOM_SETTINGS = json.load(f)
 
-PUBLISHER_ON = config('PUBLISHER_ON', default=CUSTOM_SETTINGS['inference_config'].get('publisher', False))
+PUBLISHER_ON = config('PUBLISHER_ON', default=CUSTOM_SETTINGS['inference_config'].get('publisher', False), cast=bool)
