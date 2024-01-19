@@ -7,8 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Changed
-
+## [0.3.0] - 2024 - 01 - 19
+### Added
 - Multimodal fusion layer can be a publisher, i.e., the predicted emotion will be published to be read by
 the personalisation tool (optional).
 
@@ -65,3 +65,5 @@ Example of Categories to use in each release
 [0.1.1]: https://github.com/um-xr2learn-enablers/XR2Learn-Inference/releases/tag/v0.1.1
 
 [0.2.0]: https://github.com/um-xr2learn-enablers/XR2Learn-Inference/releases/tag/v0.2.0
+
+[0.3.0]: https://github.com/um-xr2learn-enablers/XR2Learn-Inference/releases/tag/v0.3.0
