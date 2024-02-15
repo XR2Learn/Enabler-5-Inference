@@ -38,6 +38,7 @@ A `configuration.json` file is required to provide the enablers with the necessa
 version of “configuration.json” is provided and can be changed by the user.
 
 1. Run a docker image:
+
    `docker compose run --rm <<service-name>>`
 
 **Note 1**: Service names can be found in the “docker-compose.yml” file in the project’s root folder. Each modality,
@@ -104,6 +105,6 @@ Please refer to [LICENSE.md](LICENSE.md) document for more details.
 
 ## Changelog
 
-[CHANGELOG.md]
+A description of the main changes in the project’s versions can be found at [CHANGELOG.md].
 
 [CHANGELOG.md]: https://github.com/um-xr2learn-enablers/XR2Learn-Inference/blob/master/CHANGELOG.md
