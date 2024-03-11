@@ -26,3 +26,8 @@ jobs:
       run: |
         pip install -r requirements.txt
         python -m unittest discover -s tests
+    - name: Emotion_Classification/Emotion_Classification_BM_Modality -- Install dependencies and run tests
+      working-directory: ./Emotion_Classification/Emotion_Classification_BM_Modality
+      run: |
+        pip install -r requirements.txt
+        python -m unittest discover -s tests
