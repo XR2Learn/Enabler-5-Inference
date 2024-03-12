@@ -6,11 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+## [0.4.0] - 2024-03-12
 ### Added 
 - Support for bio-measurements (BM) modality using data format by [Magic XRoom](https://github.com/XR2Learn/magic-xroom).
+- License Update to Apache 2.0.
 
 ### Known Issues
-- Multimodal Layer component does not support BM modality. 
+- Multimodal Layer component does not support BM modality (when acting as a publisher). 
 
 ## [0.3.1] - 2024 - 02 - 15
 ### Added
@@ -68,7 +70,7 @@ Example of Categories to use in each release
 - Just an example of how to use changelog. -->
 
 
-[unreleased]: https://github.com/um-xr2learn-enablers/XR2Learn-Inference/compare/v0.3.1...master
+[unreleased]: https://github.com/um-xr2learn-enablers/XR2Learn-Inference/compare/v0.4.0...master
 
 [0.1.0]: https://github.com/um-xr2learn-enablers/XR2Learn-Inference/releases/tag/v0.1.0
 
@@ -79,3 +81,5 @@ Example of Categories to use in each release
 [0.3.0]: https://github.com/um-xr2learn-enablers/XR2Learn-Inference/releases/tag/v0.3.0
 
 [0.3.1]: https://github.com/um-xr2learn-enablers/XR2Learn-Inference/releases/tag/v0.3.1
+
+[0.4.0]: https://github.com/um-xr2learn-enablers/XR2Learn-Inference/releases/tag/v0.4.0
