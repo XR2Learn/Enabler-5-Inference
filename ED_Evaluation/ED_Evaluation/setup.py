@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='ed_evaluation',
-    version='0.3.1',
+    version='0.4.0',
     description='(Multimodal) Emotion Detection Testing.',
     author='UM-XR2Learn-Enablers',
     packages=['ed_evaluation'],
