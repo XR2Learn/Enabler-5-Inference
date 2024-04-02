@@ -2,10 +2,11 @@
 File to include global variables across the python package and configuration.
 All the other files inside the python package can access these variables.
 """
-from decouple import config
+import json
 import os
 import pathlib
-import json
+
+from decouple import config
 
 EMOTIONS_RAVDESS = {1: 'neutral', 2: 'calm', 3: 'happy', 4: 'sad',
                     5: 'angry', 6: 'fear', 7: 'disgust',
@@ -97,3 +98,4 @@ if os.path.exists(PATH_CUSTOM_SETTINGS):
         CUSTOM_SETTINGS = json.load(f)
 
 PUBLISHER_ON = config('PUBLISHER_ON', default=CUSTOM_SETTINGS['inference_config'].get('publisher', False), cast=bool)
+
