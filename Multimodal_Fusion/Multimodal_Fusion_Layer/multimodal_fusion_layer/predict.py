@@ -5,32 +5,18 @@ import pandas as pd
 import redis
 from tqdm import tqdm
 
-from multimodal_fusion_layer.conf import OUTPUTS_FOLDER, CUSTOM_SETTINGS, ID_TO_LABEL, REDIS_HOST, REDIS_PORT, \
-    MAPPING_RAVDESS_TO_THEORY_FLOW_DUMMY, PUBLISHER_ON
+from multimodal_fusion_layer.conf import ID_TO_LABEL, REDIS_HOST, REDIS_PORT, \
+    MAPPING_RAVDESS_TO_THEORY_FLOW_DUMMY, PUBLISHER_ON, OUTPUT_MODALITY_FOLDER, DATA_TO_FUSION, DATASET
 from multimodal_fusion_layer.emotion_publisher import EmotionPublisher
-
-data_to_fusion = CUSTOM_SETTINGS['inference_config'].get('data_to_fusion',
-                                                         [CUSTOM_SETTINGS["encoder_config"]["input_type"]])
-dataset = CUSTOM_SETTINGS["dataset_config"]["dataset_name"]
-
-modality = CUSTOM_SETTINGS["dataset_config"].get("modality", "default_modality")
-
-output_modality_folder = os.path.join(OUTPUTS_FOLDER, dataset, modality)
 
 
 def multimodal_prediction():
-    # modalities = ['eGeMAPs','MFCC']
-    # weights = [0.6,0.4]
-    # modalities = [CUSTOM_SETTINGS["encoder_config"]["input_type"]]
-    # dataset = CUSTOM_SETTINGS["dataset_config"]["dataset_name"] if (
-    #         "dataset_config" in CUSTOM_SETTINGS and "dataset_name" in CUSTOM_SETTINGS["dataset_config"]
-    # ) else "RAVDESS"
-    meta_data = pd.read_csv(os.path.join(output_modality_folder, 'test.csv'))
+    meta_data = pd.read_csv(os.path.join(OUTPUT_MODALITY_FOLDER, 'test.csv'))
 
     if PUBLISHER_ON:
-        publish_predicted_emotion(meta_data, data_to_fusion, dataset)
+        publish_predicted_emotion(meta_data, DATA_TO_FUSION, DATASET)
     else:
-        write_predicted_emotion(meta_data, data_to_fusion, dataset)
+        write_predicted_emotion(meta_data, DATA_TO_FUSION, DATASET)
 
 
 def write_predicted_emotion(meta_data, modalities, dataset="RAVDESS"):
@@ -43,7 +29,7 @@ def write_predicted_emotion(meta_data, modalities, dataset="RAVDESS"):
         # print(prediction_label)
         all_predictions.append(prediction_label)
     meta_data['prediction'] = all_predictions
-    meta_data.to_csv(os.path.join(output_modality_folder, 'predictions.csv'))
+    meta_data.to_csv(os.path.join(OUTPUT_MODALITY_FOLDER, 'predictions.csv'))
 
 
 def publish_predicted_emotion(meta_data, modalities, dataset="RAVDESS"):
@@ -63,7 +49,7 @@ def publish_predicted_emotion(meta_data, modalities, dataset="RAVDESS"):
 def extract_predictions(modalities, filename):
     all_predictions = None
     for mod in modalities:
-        single_prediction = np.load(os.path.join(output_modality_folder, f"prediction-{mod}", filename))
+        single_prediction = np.load(os.path.join(OUTPUT_MODALITY_FOLDER, f"prediction-{mod}", filename))
         all_predictions = single_prediction if all_predictions is None else np.vstack(
             (all_predictions, single_prediction))
     return all_predictions
