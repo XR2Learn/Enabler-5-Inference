@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# Deleting All dataset, output files
-
 echo "--------------------"
 echo "Emotion-classification-audio"
 echo "--------------------"
