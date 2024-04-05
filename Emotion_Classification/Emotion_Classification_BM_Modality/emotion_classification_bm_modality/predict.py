@@ -33,7 +33,7 @@ def predict():
         prefix_path = os.path.join(
             MODALITY_FOLDER,
             f"ssl_features_{ckpt_name}_encoder")
-        assert os.path.isdir(prefix_path), "The path to features does not exist"
+        assert os.path.isdir(prefix_path), f"The path to features does not exist: {prefix_path}"
         # check dimensionality of features
         features_size = np.load(
             os.path.join(
