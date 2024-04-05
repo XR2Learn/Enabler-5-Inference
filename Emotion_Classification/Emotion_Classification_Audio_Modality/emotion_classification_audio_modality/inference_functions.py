@@ -14,7 +14,7 @@ from classification_model import SupervisedModel
 def predict_and_save(
         model: Union[torch.nn.Module, pl.LightningModule],
         destination_path: str,
-        input_type: str,
+        ckpt_name: str,
         metadata_csv_path: Optional[str] = None,
         inference_data_path: Optional[str] = None,
         prefix_path: Optional[str] = None,
@@ -49,7 +49,7 @@ def predict_and_save(
             ) for file_ in os.listdir(inference_data_path) if file_.endswith(".npy")
         ]
 
-    pathlib.Path(os.path.join(destination_path, f'prediction-{input_type}')).mkdir(parents=True, exist_ok=True)
+    pathlib.Path(os.path.join(destination_path, f'prediction-{ckpt_name}')).mkdir(parents=True, exist_ok=True)
     for data_path in tqdm(files):
         x = np.load(
             os.path.join(prefix_path, data_path)
@@ -65,6 +65,6 @@ def predict_and_save(
         ) else model(x.unsqueeze(0))
         prediction = prediction.squeeze(0)
         np.save(
-            os.path.join(destination_path, f'prediction-{input_type}', f"{data_path}"),
+            os.path.join(destination_path, f'prediction-{ckpt_name}', f"{data_path}"),
             prediction.detach().numpy()
         )
