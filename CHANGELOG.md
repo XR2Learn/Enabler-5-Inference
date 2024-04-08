@@ -19,6 +19,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   from [Magic XRoom](https://github.com/XR2Learn/magic-xroom).
 - Output directory structure: Two additional directory levels to indicate the dataset/modality that produced the
   output (changes applied for audio and BM modalities).
+- Output directory structure for reading trained encoders and models, according to Training Tools structure.
+
+## Fixed
+
+- Multimodal Layer component now supports BM modality (when acting as a publisher).
 
 ## [0.4.0] - 2024 - 03 - 12
 
