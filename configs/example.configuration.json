@@ -6,7 +6,7 @@
   "inference_config": {
     "features": "ssl_features",
     "mode": "features",
-    "publisher": true
+    "publisher": false
   },
   "pre_processing_config": {
     "process": "standardize",
