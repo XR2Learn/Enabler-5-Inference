@@ -29,7 +29,6 @@ def write_predicted_emotion(meta_data, modalities, dataset="RAVDESS"):
         all_predictions_for_file = extract_predictions(modalities, f)
         majority_index = get_majority_voting_index(all_predictions_for_file)
         prediction_label = ID_TO_LABEL[dataset][majority_index]
-        # print(prediction_label)
         all_predictions.append(prediction_label)
     meta_data['prediction'] = all_predictions
     meta_data.to_csv(os.path.join(OUTPUT_MODALITY_FOLDER, 'predictions.csv'))
@@ -43,10 +42,12 @@ def publish_predicted_emotion(meta_data, modalities, dataset="RAVDESS"):
     for file in files:
         all_predictions_for_file = extract_predictions(modalities, file)
         majority_index = get_majority_voting_index(all_predictions_for_file)
-        prediction_label = ID_TO_LABEL[dataset][majority_index]
-        prediction_label_to_publish = MAPPING_RAVDESS_TO_THEORY_FLOW_DUMMY[prediction_label]
-        emotion_publisher.publish_emotion(prediction_label_to_publish)
-        print(prediction_label_to_publish)
+        prediction_label = int(majority_index)
+        if dataset == 'RAVDESS':
+            prediction_label = ID_TO_LABEL[dataset][majority_index]
+            prediction_label = MAPPING_RAVDESS_TO_THEORY_FLOW_DUMMY[prediction_label]
+        emotion_publisher.publish_emotion(prediction_label)
+        print(prediction_label)
 
 
 def ckpt_name(data_to_fusion):
@@ -63,7 +64,9 @@ def ckpt_name(data_to_fusion):
 def extract_predictions(modalities, filename):
     all_predictions = None
     for mod in modalities:
-        single_prediction = np.load(os.path.join(OUTPUT_MODALITY_FOLDER, 'prediction-' + ckpt_name(mod), filename))
+        single_prediction = np.load(os.path.join(OUTPUT_MODALITY_FOLDER,
+                                                 'prediction-' + ckpt_name(mod),
+                                                 filename))
         all_predictions = single_prediction if all_predictions is None else np.vstack(
             (all_predictions, single_prediction))
     return all_predictions
