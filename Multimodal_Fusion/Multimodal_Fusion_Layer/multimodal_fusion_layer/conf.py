@@ -74,6 +74,7 @@ datasets_folder = os.path.join(MAIN_FOLDER, 'outputs')
 DATASETS_FOLDER = config('DATASETS_FOLDER', default=datasets_folder)
 DATA_PATH = os.path.join(MAIN_FOLDER_DEFAULT, 'datasets', 'RAVDESS', 'audio_speech_actors_01-24')
 RAVDESS_DATA_PATH = os.path.join(MAIN_FOLDER_DEFAULT, 'datasets', 'RAVDESS')
+EXPERIMENT_ID = config('EXPERIMENT_ID', default='development-model')
 
 # COMPONENT_OUTPUT_FOLDER = os.path.join(OUTPUTS_FOLDER, 'ssl_training')
 
@@ -106,3 +107,12 @@ DATASET = CUSTOM_SETTINGS["dataset_config"]["dataset_name"]
 MODALITY = CUSTOM_SETTINGS["dataset_config"].get("modality", "default_modality")
 
 OUTPUT_MODALITY_FOLDER = os.path.join(OUTPUTS_FOLDER, DATASET, MODALITY)
+
+
+# CKPT_NAME = (
+#         f"{EXPERIMENT_ID}_"
+#         f"{CUSTOM_SETTINGS['dataset_config']['dataset_name']}_"
+#         f"{MODALITY}_"
+#         f"{CUSTOM_SETTINGS['sup_config']['input_type']}_"
+#         f"{CUSTOM_SETTINGS['encoder_config']['class_name']}"
+#     )

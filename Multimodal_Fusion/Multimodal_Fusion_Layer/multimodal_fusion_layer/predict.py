@@ -5,8 +5,11 @@ import pandas as pd
 import redis
 from tqdm import tqdm
 
-from multimodal_fusion_layer.conf import ID_TO_LABEL, REDIS_HOST, REDIS_PORT, \
-    MAPPING_RAVDESS_TO_THEORY_FLOW_DUMMY, PUBLISHER_ON, OUTPUT_MODALITY_FOLDER, DATA_TO_FUSION, DATASET
+from multimodal_fusion_layer.conf import (ID_TO_LABEL, REDIS_HOST, REDIS_PORT,
+                                          MAPPING_RAVDESS_TO_THEORY_FLOW_DUMMY,
+                                          PUBLISHER_ON, OUTPUT_MODALITY_FOLDER,
+                                          DATA_TO_FUSION, DATASET, CUSTOM_SETTINGS,
+                                          EXPERIMENT_ID, MODALITY)
 from multimodal_fusion_layer.emotion_publisher import EmotionPublisher
 
 
@@ -46,10 +49,21 @@ def publish_predicted_emotion(meta_data, modalities, dataset="RAVDESS"):
         print(prediction_label_to_publish)
 
 
+def ckpt_name(data_to_fusion):
+    folder_structure_prediction = (
+        f"{EXPERIMENT_ID}_"
+        f"{CUSTOM_SETTINGS['dataset_config']['dataset_name']}_"
+        f"{MODALITY}_"
+        f"{data_to_fusion}_"
+        f"{CUSTOM_SETTINGS['encoder_config']['class_name']}"
+    )
+    return folder_structure_prediction
+
+
 def extract_predictions(modalities, filename):
     all_predictions = None
     for mod in modalities:
-        single_prediction = np.load(os.path.join(OUTPUT_MODALITY_FOLDER, f"prediction-{mod}", filename))
+        single_prediction = np.load(os.path.join(OUTPUT_MODALITY_FOLDER, 'prediction-' + ckpt_name(mod), filename))
         all_predictions = single_prediction if all_predictions is None else np.vstack(
             (all_predictions, single_prediction))
     return all_predictions
