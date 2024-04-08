@@ -29,9 +29,9 @@ class SupervisedModel(LightningModule):
         if freeze_encoder:
             for param in self.encoder.parameters():
                 param.requires_grad = False
-            print("succesfully froze the parameters for the encoder")
+            print("Successfully froze the parameters for the encoder")
         else:
-            print("NO paramaters frozen")
+            print("No parameters frozen")
 
         ignore_list = []
         # It is expected that if components are instances of LightningModules, they trigger their own
