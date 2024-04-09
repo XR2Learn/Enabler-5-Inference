@@ -1,6 +1,4 @@
-![XR2Learn](https://raw.githubusercontent.com/XR2Learn/.github/5c0fada6136915b389c1cd2151a0dd2cfc4a5aac/images/XR2Learn%20logo.png)
-
-# Enabler-5: Inference
+# [XR2Learn Emotion Recognition] Inference Tools
 
 These tools are designed for the unimodal and multimodal emotion classification and evaluation in XR2Learn. This set of
 tools includes Emotion Classification (per modality), Multimodal Fusion and Evaluation components. Each tool is a
