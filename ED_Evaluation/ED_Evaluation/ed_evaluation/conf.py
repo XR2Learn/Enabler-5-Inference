@@ -19,7 +19,7 @@ LABEL_TO_ID = {
         'disgust': 6,
         'surprised': 7
     },
-    "BM": {
+    "XRoom": {
         "BORED": 0,
         "ENGAGED": 1,
         "FRUSTRATED": 2
@@ -37,7 +37,7 @@ ID_TO_LABEL = {
         6: 'disgust',
         7: 'surprised'
     },
-    "BM": {
+    "XRoom": {
         0: "BORED",
         1: "ENGAGED",
         2: "FRUSTRATED"
@@ -97,3 +97,9 @@ RAVDESS_EMOTION_TO_LABEL = {"neutral": "01",
                             "disgust": "07",
                             "suprised": "08"
                             }
+
+DATASET = CUSTOM_SETTINGS["dataset_config"]["dataset_name"]
+
+MODALITY = CUSTOM_SETTINGS["dataset_config"].get("modality", "default_modality")
+
+OUTPUT_MODALITY_FOLDER = os.path.join(OUTPUTS_FOLDER, DATASET, MODALITY)

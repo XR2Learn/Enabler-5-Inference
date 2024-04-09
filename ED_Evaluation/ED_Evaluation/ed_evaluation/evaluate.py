@@ -5,11 +5,11 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import classification_report, confusion_matrix
 
-from conf import OUTPUTS_FOLDER
+from conf import OUTPUT_MODALITY_FOLDER
 
 
 def evaluate():
-    meta_data = pd.read_csv(os.path.join(OUTPUTS_FOLDER, 'predictions.csv'))
+    meta_data = pd.read_csv(os.path.join(OUTPUT_MODALITY_FOLDER, 'predictions.csv'))
     gt = meta_data['labels']
     predictions = meta_data['prediction']
     evaluate_predictions(gt, predictions)
