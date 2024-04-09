@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-
+## [0.5.0] - 2024 - 04 - 09
 ## Added
 
 - "modality" configuration required in addition to dataset name, under "dataset_configuration"
@@ -98,16 +98,18 @@ Example of Categories to use in each release
 - Just an example of how to use changelog. -->
 
 
-[unreleased]: https://github.com/um-xr2learn-enablers/XR2Learn-Inference/compare/v0.4.0...master
+[unreleased]: https://github.com/XR2Learn/Enabler-5-Inference/compare/v0.5.0...master
 
-[0.1.0]: https://github.com/um-xr2learn-enablers/XR2Learn-Inference/releases/tag/v0.1.0
+[0.1.0]: https://github.com/XR2Learn/Enabler-5-Inference/releases/tag/v0.1.0
 
-[0.1.1]: https://github.com/um-xr2learn-enablers/XR2Learn-Inference/releases/tag/v0.1.1
+[0.1.1]: https://github.com/XR2Learn/Enabler-5-Inference/releases/tag/v0.1.1
 
-[0.2.0]: https://github.com/um-xr2learn-enablers/XR2Learn-Inference/releases/tag/v0.2.0
+[0.2.0]: https://github.com/XR2Learn/Enabler-5-Inference/releases/tag/v0.2.0
 
-[0.3.0]: https://github.com/um-xr2learn-enablers/XR2Learn-Inference/releases/tag/v0.3.0
+[0.3.0]: https://github.com/XR2Learn/Enabler-5-Inference/releases/tag/v0.3.0
 
-[0.3.1]: https://github.com/um-xr2learn-enablers/XR2Learn-Inference/releases/tag/v0.3.1
+[0.3.1]: https://github.com/XR2Learn/Enabler-5-Inference/releases/tag/v0.3.1
 
-[0.4.0]: https://github.com/um-xr2learn-enablers/XR2Learn-Inference/releases/tag/v0.4.0
+[0.4.0]: https://github.com/XR2Learn/Enabler-5-Inference/releases/tag/v0.4.0
+
+[0.5.0]: https://github.com/XR2Learn/Enabler-5-Inference/releases/tag/v0.5.0
