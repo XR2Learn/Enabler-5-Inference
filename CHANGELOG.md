@@ -27,6 +27,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Multimodal Layer component now supports BM modality (when acting as a publisher).
 
+## Known Issues
+- "data_to_fusion" configuration under "inference_config" is generating an error. 
+
 ## [0.4.0] - 2024 - 03 - 12
 
 ### Added
