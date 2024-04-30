@@ -104,4 +104,20 @@ services:
     ports:
       - "8000:8000"
 
-
+  inference-data-processing-bm:
+    image: some.registry.com/xr2learn-enablers/inference-data-processing-bm:latest
+    build:
+      context: 'Inference_Data_Processing/Inference_Data_Processing_BM_Modality'
+      dockerfile: 'Dockerfile'
+    volumes:
+      - "./Inference_Data_Processing/Inference_Data_Processing_BM_Modality:/app"
+      - "./datasets:/app/datasets"
+      - "./outputs:/app/outputs"
+      - "${CONFIG_FILE_PATH:-./configuration.json}:/app/configuration.json"
+    working_dir: /app
+    environment:
+      - EXPERIMENT_ID=${EXPERIMENT_ID:-development-model}
+      - REDIS_HOST=redis
+    command: python inference_data_processing_bm_modality/process_data.py
+    depends_on:
+      - redis
