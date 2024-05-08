@@ -36,7 +36,8 @@ def launch_processing():
     data_publisher = init_redis_data_publisher(
         REDIS_HOST,
         REDIS_PORT,
-        CUSTOM_SETTINGS["dataset_config"]["modality"]
+        CUSTOM_SETTINGS["dataset_config"]["modality"],
+        logger
     )
 
     processed_files = set()
@@ -62,6 +63,7 @@ def launch_processing():
             logger.info(f"Files to process: {files}")
         # loop over target files in the directory
         for filename in files:
+            session = os.path.basename(filename).split("_")[2]
             running_params = None
             logging.info(f"Processing {filename} ...")
             header = read_head(filename)
@@ -110,7 +112,7 @@ def launch_processing():
                             f"Obtained batches shape: {preprocessed.shape}"
                         )
                         for window in preprocessed:
-                            data_publisher.publish_data(window)
+                            data_publisher.publish_data(session, window)
                     else:
                         logging.info(
                             f"No full temporal windows found. "
