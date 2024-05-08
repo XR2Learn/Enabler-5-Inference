@@ -9,4 +9,5 @@ torch==2.0.1
 torchvision==0.15.2
 sox==1.4.1
 pytorch_lightning==1.9.0
+redis==5.0.1
 -e file:./#egg=emotion_classification_bm_modality

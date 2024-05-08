@@ -54,17 +54,26 @@ def predict_and_save(
         x = np.load(
             os.path.join(prefix_path, data_path)
         )
-        if len(x.shape) <= 1:
-            x = np.expand_dims(x, axis=-1)
-        if transforms is not None:
-            x = transforms(x)
-
-        # add batch dimension for the supervised model
-        prediction = model(torch.nn.Flatten(start_dim=0)(torch.tensor(x)).unsqueeze(0)) if (
-            not isinstance(model, SupervisedModel)
-        ) else model(x.unsqueeze(0))
-        prediction = prediction.squeeze(0)
+        prediction = make_prediction_from_numpy(x)
         np.save(
             os.path.join(destination_path, f'prediction-{input_type}', f"{data_path}"),
             prediction.detach().numpy()
         )
+
+
+def make_prediction_from_numpy(
+        x: np.ndarray,
+        model: Union[torch.nn.Module, pl.LightningModule],
+        transforms: Optional[Dict[str, Any]] = None,
+):
+    if len(x.shape) <= 1:
+        x = np.expand_dims(x, axis=-1)
+    if transforms is not None:
+        x = transforms(x)
+
+    # add batch dimension for the supervised model
+    prediction = model(torch.nn.Flatten(start_dim=0)(torch.tensor(x)).unsqueeze(0)) if (
+        not isinstance(model, SupervisedModel)
+    ) else model(x.unsqueeze(0))
+    prediction = prediction.squeeze(0)
+    return prediction

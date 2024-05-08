@@ -27,6 +27,9 @@ CUSTOM_SETTINGS = {
     }
 }
 
+REDIS_PORT = config('REDIS_PORT', default='6379')
+REDIS_HOST = config('REDIS_HOST', default='localhost')
+
 path_custom_settings = os.path.join(MAIN_FOLDER, 'configuration.json')
 PATH_CUSTOM_SETTINGS = config('PATH_CUSTOM_SETTINGS', default=path_custom_settings)
 if os.path.exists(PATH_CUSTOM_SETTINGS):
