@@ -9,9 +9,10 @@
     "publisher": false,
     "data_processing": {
       "monitor_directory": "./datasets/test_data",
-      "reading_delay": 1,
+      "reading_delay": 5,
       "modality_suffix": "SHIMMER_.csv"
-    }
+    },
+    "emocl_pubsub": true
   },
   "pre_processing_config": {
     "process": "standardize",
