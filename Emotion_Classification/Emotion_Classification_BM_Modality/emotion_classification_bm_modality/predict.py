@@ -14,6 +14,7 @@ from conf import (
     CUSTOM_SETTINGS,
     MODALITY_FOLDER,
     EXPERIMENT_ID,
+    ID_TO_LABEL,
     REDIS_HOST,
     REDIS_PORT
 )
@@ -123,7 +124,8 @@ def predict():
             f"{modality}_data",
             model,
             transforms,
-            logger
+            logger,
+            ID_TO_LABEL
         )
         logging.info(f"Listening to {modality}_data_stream channel...")
         emocl_pubsub.start_processing()

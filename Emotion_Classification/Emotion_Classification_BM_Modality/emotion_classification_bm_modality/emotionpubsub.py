@@ -13,7 +13,8 @@ def init_redis_emocl_pubsub(
         data_header,
         model,
         transforms,
-        logger
+        logger,
+        id_to_emotion
 ):
     redis_cli = redis.Redis(host=host, port=port)
     emocl_pubsub = EmotionClassificationPubSub(
@@ -23,13 +24,14 @@ def init_redis_emocl_pubsub(
         data_header=data_header,
         model=model,
         transforms=transforms,
-        logger=logger
+        logger=logger,
+        id_to_emotion=id_to_emotion
     )
     return emocl_pubsub
 
 
 class EmotionClassificationPubSub:
-    def __init__(self, redis_cli, modality, channel, data_header, model, transforms, logger):
+    def __init__(self, redis_cli, modality, channel, data_header, model, transforms, logger, id_to_emotion):
         self.redis_cli = redis_cli
         self.pubsub = self.redis_cli.pubsub()
 
@@ -41,6 +43,7 @@ class EmotionClassificationPubSub:
         self.model = model
         self.transforms = transforms
         self.logger = logger
+        self.id_to_emotion = id_to_emotion
 
         self.sub_event_types = {
             channel: self.handle_data_stream
@@ -49,10 +52,11 @@ class EmotionClassificationPubSub:
     def start_processing(self):
         self.subscribe_data_stream()
 
-    def publish_model_output(self, session, model_output):
+    def publish_model_output(self, session, model_output, emotion):
         event_data = {
             "session_id": session,
-            f"{self.modality}_emotion_classification_output": model_output.tolist()
+            f"{self.modality}_emotion_classification_output": model_output.tolist(),
+            f"{self.modality}_emotion_classification_detected_emotion": emotion
         }
         json_message = json.dumps(event_data)
         result = self.redis_cli.publish(self.output_event_type, json_message)
@@ -69,6 +73,8 @@ class EmotionClassificationPubSub:
         data_window = np.array(data[self.data_header])
         self.logger.info(f"Making prediction for received data of shape: {data_window.shape}")
         model_output = make_prediction_from_numpy(data_window, self.model, self.transforms).detach().numpy()
-        self.logger.info(f"Generated output shape: {data_window.shape}")
+        predicted_emotion = self.id_to_emotion[np.argmax(model_output)]
+        self.logger.info(f"Generated output shape: {model_output.shape}")
+        self.logger.info(f"Predicted emotion: {predicted_emotion}")
         self.logger.info(f"Publishing output to {self.output_event_type}")
-        self.publish_model_output(session, model_output)
+        self.publish_model_output(session, model_output, predicted_emotion)

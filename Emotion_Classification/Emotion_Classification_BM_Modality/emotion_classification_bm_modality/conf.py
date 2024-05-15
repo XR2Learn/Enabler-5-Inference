@@ -60,3 +60,9 @@ BM_EMOTION_TO_LABEL = {
     "ENGAGED": "02",
     "FRUSTRATED": "03"
 }
+
+ID_TO_LABEL = {
+    0: "BORED",
+    1: "ENGAGED",
+    2: "FRUSTRATED"
+}
