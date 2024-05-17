@@ -38,7 +38,7 @@ class EmotionClassificationPubSub:
         assert modality in channel, "Modality is not mentioned in the channel"
         self.modality = modality
         self.channel = channel
-        self.output_event_type = f"{self.modality}_emotion_classification_output_stream"
+        self.output_event_type = f"emotion_classification_output_stream"
         self.data_header = data_header
         self.model = model
         self.transforms = transforms
@@ -55,8 +55,9 @@ class EmotionClassificationPubSub:
     def publish_model_output(self, session, model_output, emotion):
         event_data = {
             "session_id": session,
-            f"{self.modality}_emotion_classification_output": model_output.tolist(),
-            f"{self.modality}_emotion_classification_detected_emotion": emotion
+            "modality": self.modality,
+            f"emotion_classification_output": model_output.tolist(),
+            f"emotion_classification_detected_emotion": emotion
         }
         json_message = json.dumps(event_data)
         result = self.redis_cli.publish(self.output_event_type, json_message)

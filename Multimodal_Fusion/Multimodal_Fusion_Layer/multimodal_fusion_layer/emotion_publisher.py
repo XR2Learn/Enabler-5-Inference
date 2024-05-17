@@ -10,18 +10,18 @@ from multimodal_fusion_layer.conf import REDIS_HOST, REDIS_PORT, ID_TO_LABEL, MA
 
 # f"{self.modality}_emotion_classification_output_stream
 # Make this a Pub/Sub insteado of just publisher
-class EmotionPublisher:
-    def __init__(self, redis_cli):
+class FusionPublisherSubscriber:
+    def __init__(self, redis_cli, modality):
         self.redis_cli = redis_cli
         self.pubsub = self.redis_cli.pubsub()
         self.sub_event_types = {
-            'shimmer_emotion_classification_output_stream': self.handle_unimodal_emotion_classification
-            }
+            'emotion_classification_output_stream': self.handle_unimodal_emotion_classification
+        }
 
-    def publish_emotion(self, label):
+    def publish_emotion(self, emotion_index):
         event_type = 'emotion'
         event_data = {
-            'emotion': label
+            'emotion': emotion_index
         }
         print(event_data)
         self.publish_activity(event_type, event_data)
@@ -61,10 +61,12 @@ class EmotionPublisher:
 
     def handle_unimodal_emotion_classification(self, message):
         # print(message['data'])
-        print('Message receive!\n')
+        print('Message received!\n')
         message_data = json.loads(message['data'])
         print(message_data)
-        message_received = message_data['shimmer_emotion_classification_output']
+        # modality to be used later when having more than one modality
+        modality = message_data['modality']
+        message_received = message_data[f'emotion_classification_output']
         data_to_publish = process_prediction('XRoom', message_received)
         self.publish_emotion(data_to_publish)
 
@@ -88,7 +90,7 @@ def get_majority_voting_index(predictions):
 if __name__ == '__main__':
     redis_cli = redis.Redis(host=REDIS_HOST, port=REDIS_PORT)
 
-    emotion_publisher = EmotionPublisher(redis_cli)
+    emotion_publisher = FusionPublisherSubscriber(redis_cli)
     time.sleep(5)
     emotion_publisher.start_activity()
     time.sleep(20)
