@@ -8,8 +8,9 @@ from tqdm import tqdm
 from multimodal_fusion_layer.conf import (ID_TO_LABEL, REDIS_HOST, REDIS_PORT,
                                           PUBLISHER_ON, OUTPUT_MODALITY_FOLDER,
                                           DATA_TO_FUSION, DATASET, CUSTOM_SETTINGS,
-                                          EXPERIMENT_ID, MODALITY, MAPPING_RAVDESS_TO_THEORY_FLOW_DUMMY)
-from multimodal_fusion_layer.emotion_publisher import FusionPublisherSubscriber
+                                          EXPERIMENT_ID, MODALITY)
+from multimodal_fusion_layer.fusion_pub_sub import FusionPublisherSubscriber
+from multimodal_fusion_layer.fusion_schema import get_majority_voting_index
 
 
 def multimodal_prediction():
@@ -36,18 +37,9 @@ def write_predicted_emotion(meta_data, modalities, dataset="RAVDESS"):
 def publish_predicted_emotion(meta_data, modalities, dataset="RAVDESS"):
     redis_cli = redis.Redis(host=REDIS_HOST, port=REDIS_PORT)
     modality = modalities[0]
-    emotion_publisher = FusionPublisherSubscriber(redis_cli, modality)
+    emotion_publisher = FusionPublisherSubscriber(redis_cli)
     print('Listening to the Emotion Detection Channel')
     emotion_publisher.subscribe_unimodal_emotion_classification()
-
-
-def process_prediction(dataset, prediction_vector):
-    majority_index = get_majority_voting_index(prediction_vector)
-    prediction_label = int(majority_index)
-    if dataset == 'RAVDESS':
-        prediction_label = ID_TO_LABEL[dataset][majority_index]
-        prediction_label = MAPPING_RAVDESS_TO_THEORY_FLOW_DUMMY[prediction_label]
-    return prediction_label
 
 
 def ckpt_name(data_to_fusion):

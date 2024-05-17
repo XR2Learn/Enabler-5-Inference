@@ -2,16 +2,14 @@ import json
 import time
 from random import randint
 
-import numpy as np
 import redis
 
-from multimodal_fusion_layer.conf import REDIS_HOST, REDIS_PORT, ID_TO_LABEL, MAPPING_RAVDESS_TO_THEORY_FLOW_DUMMY
+from multimodal_fusion_layer.conf import REDIS_HOST, REDIS_PORT
+from multimodal_fusion_layer.fusion_schema import process_prediction
 
 
-# f"{self.modality}_emotion_classification_output_stream
-# Make this a Pub/Sub insteado of just publisher
 class FusionPublisherSubscriber:
-    def __init__(self, redis_cli, modality):
+    def __init__(self, redis_cli):
         self.redis_cli = redis_cli
         self.pubsub = self.redis_cli.pubsub()
         self.sub_event_types = {
@@ -69,22 +67,6 @@ class FusionPublisherSubscriber:
         message_received = message_data[f'emotion_classification_output']
         data_to_publish = process_prediction('XRoom', message_received)
         self.publish_emotion(data_to_publish)
-
-
-def process_prediction(dataset, prediction_vector):
-    prediction_vector = np.array(prediction_vector)
-    majority_index = get_majority_voting_index(prediction_vector)
-    prediction_label = int(majority_index)
-    if dataset == 'RAVDESS':
-        prediction_label = ID_TO_LABEL[dataset][majority_index]
-        prediction_label = MAPPING_RAVDESS_TO_THEORY_FLOW_DUMMY[prediction_label]
-    return prediction_label
-
-
-def get_majority_voting_index(predictions):
-    if len(predictions.shape) <= 1:
-        return np.argmax(predictions)
-    return np.argmax(np.sum(predictions, axis=0))
 
 
 if __name__ == '__main__':
