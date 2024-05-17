@@ -6,10 +6,9 @@ import redis
 from tqdm import tqdm
 
 from multimodal_fusion_layer.conf import (ID_TO_LABEL, REDIS_HOST, REDIS_PORT,
-                                          MAPPING_RAVDESS_TO_THEORY_FLOW_DUMMY,
                                           PUBLISHER_ON, OUTPUT_MODALITY_FOLDER,
                                           DATA_TO_FUSION, DATASET, CUSTOM_SETTINGS,
-                                          EXPERIMENT_ID, MODALITY)
+                                          EXPERIMENT_ID, MODALITY, MAPPING_RAVDESS_TO_THEORY_FLOW_DUMMY)
 from multimodal_fusion_layer.emotion_publisher import EmotionPublisher
 
 
@@ -36,18 +35,31 @@ def write_predicted_emotion(meta_data, modalities, dataset="RAVDESS"):
 
 def publish_predicted_emotion(meta_data, modalities, dataset="RAVDESS"):
     files = meta_data['files']
-    print('Publishing the predicted emotions')
     redis_cli = redis.Redis(host=REDIS_HOST, port=REDIS_PORT)
     emotion_publisher = EmotionPublisher(redis_cli)
-    for file in files:
-        all_predictions_for_file = extract_predictions(modalities, file)
-        majority_index = get_majority_voting_index(all_predictions_for_file)
-        prediction_label = int(majority_index)
-        if dataset == 'RAVDESS':
-            prediction_label = ID_TO_LABEL[dataset][majority_index]
-            prediction_label = MAPPING_RAVDESS_TO_THEORY_FLOW_DUMMY[prediction_label]
-        emotion_publisher.publish_emotion(prediction_label)
-        print(prediction_label)
+    print('Listening to the Emotion Detection Channel')
+    emotion_publisher.subscribe_unimodal_emotion_classification()
+
+    # print('Publishing the predicted emotions')
+
+    # for file in files:
+    #     all_predictions_for_file = extract_predictions(modalities, file)
+    #     majority_index = get_majority_voting_index(all_predictions_for_file)
+    #     prediction_label = int(majority_index)
+    #     if dataset == 'RAVDESS':
+    #         prediction_label = ID_TO_LABEL[dataset][majority_index]
+    #         prediction_label = MAPPING_RAVDESS_TO_THEORY_FLOW_DUMMY[prediction_label]
+    #     emotion_publisher.publish_emotion(prediction_label)
+    #     print(prediction_label)
+
+
+def process_prediction(dataset, prediction_vector):
+    majority_index = get_majority_voting_index(prediction_vector)
+    prediction_label = int(majority_index)
+    if dataset == 'RAVDESS':
+        prediction_label = ID_TO_LABEL[dataset][majority_index]
+        prediction_label = MAPPING_RAVDESS_TO_THEORY_FLOW_DUMMY[prediction_label]
+    return prediction_label
 
 
 def ckpt_name(data_to_fusion):
