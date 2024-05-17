@@ -66,3 +66,5 @@ ID_TO_LABEL = {
     1: "ENGAGED",
     2: "FRUSTRATED"
 }
+
+PUBLISHER_ON = config('PUBLISHER_ON', default=CUSTOM_SETTINGS['inference_config'].get('publisher', False), cast=bool)

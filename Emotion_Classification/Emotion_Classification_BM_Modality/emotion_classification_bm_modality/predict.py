@@ -6,10 +6,8 @@ import os
 import numpy as np
 import torch
 
-from classifiers.linear import LinearClassifier
 from classification_model import SupervisedModel
-from inference_functions import predict_and_save
-from utils.init_utils import init_encoder, init_transforms
+from classifiers.linear import LinearClassifier
 from conf import (
     CUSTOM_SETTINGS,
     MODALITY_FOLDER,
@@ -18,7 +16,10 @@ from conf import (
     REDIS_HOST,
     REDIS_PORT
 )
+from emotion_classification_bm_modality.conf import PUBLISHER_ON
 from emotionpubsub import init_redis_emocl_pubsub
+from inference_functions import predict_and_save
+from utils.init_utils import init_encoder, init_transforms
 
 
 def init_logger():
@@ -42,7 +43,7 @@ def predict():
 
     modality = CUSTOM_SETTINGS['dataset_config']['modality'] if (
             'modality' in CUSTOM_SETTINGS['dataset_config']
-        ) else 'default_modality'
+    ) else 'default_modality'
     ckpt_name = (
         f"{EXPERIMENT_ID}_"
         f"{CUSTOM_SETTINGS['dataset_config']['dataset_name']}_"
@@ -52,9 +53,8 @@ def predict():
     )
 
     if (
-        CUSTOM_SETTINGS["inference_config"]["mode"] == "features" and
-        "emocl_pubsub" in CUSTOM_SETTINGS["inference_config"] and
-        CUSTOM_SETTINGS["inference_config"]["emocl_pubsub"]
+            CUSTOM_SETTINGS["inference_config"]["mode"] == "features" and
+            PUBLISHER_ON
     ):
         raise ValueError("""
                          Mode 'features' in not supported for inference with pub/sub protocol
@@ -111,10 +111,7 @@ def predict():
     model.eval()
     use_inference_path = "inference_path" in CUSTOM_SETTINGS["inference_config"]
 
-    if (
-        "emocl_pubsub" in CUSTOM_SETTINGS["inference_config"] and
-        CUSTOM_SETTINGS["inference_config"]["emocl_pubsub"]
-    ):
+    if PUBLISHER_ON:
         logging.info("Initializing emotion classification pub/sub")
         emocl_pubsub = init_redis_emocl_pubsub(
             REDIS_HOST,

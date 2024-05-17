@@ -3,6 +3,7 @@ import redis
 
 import numpy as np
 from inference_functions import make_prediction_from_numpy
+from emotion_classification_bm_modality.conf import PUBLISHER_ON
 
 
 def init_redis_emocl_pubsub(
