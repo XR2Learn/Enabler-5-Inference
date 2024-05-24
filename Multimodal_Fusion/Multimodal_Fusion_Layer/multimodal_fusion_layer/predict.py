@@ -29,6 +29,12 @@ def init_logger():
 def multimodal_prediction():
     meta_data = pd.read_csv(os.path.join(OUTPUT_MODALITY_FOLDER, 'test.csv'))
 
+    if PUBLISHER_ON and MODALITY != 'shimmer':
+        raise ValueError("""
+                        Migration for Pub/Sub protocol not yet available for this modality or dataset.\n
+                        Please change the dataset/modality values or set publisher to false.
+                        """)
+
     if PUBLISHER_ON:
         publish_predicted_emotion()
     else:
