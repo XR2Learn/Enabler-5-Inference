@@ -9,12 +9,13 @@ from multimodal_fusion_layer.fusion_schema import process_prediction
 
 
 class FusionPublisherSubscriber:
-    def __init__(self, redis_cli):
+    def __init__(self, redis_cli, logger):
         self.redis_cli = redis_cli
         self.pubsub = self.redis_cli.pubsub()
         self.sub_event_types = {
             'emotion_classification_output_stream': self.handle_unimodal_emotion_classification
         }
+        self.logger = logger
 
     def publish_emotion(self, emotion_index):
         event_type = 'emotion'
@@ -54,14 +55,14 @@ class FusionPublisherSubscriber:
         self.sub_thread = self.pubsub.run_in_thread(sleep_time=0.001)
 
     def handle_next_activity_level(self, message):
-        print(message['data'])
+        self.logger.info(f"Message: {message['data']}")
         self.sub_thread.stop()
 
     def handle_unimodal_emotion_classification(self, message):
         # print(message['data'])
-        print('Message received!\n')
+        self.logger.info("Message received!")
         message_data = json.loads(message['data'])
-        print(message_data)
+        self.logger.info(f"{message_data}")
         # modality to be used later when having more than one modality
         modality = message_data['modality']
         message_received = message_data[f'emotion_classification_output']
