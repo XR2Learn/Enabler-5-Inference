@@ -31,7 +31,7 @@ def multimodal_prediction():
 
     if PUBLISHER_ON and MODALITY != 'shimmer':
         raise ValueError("""
-                        Migration for Pub/Sub protocol not yet available for this modality or dataset.\n
+                        Migration for Pub/Sub protocol not yet available for this modality or dataset.
                         Please change the dataset/modality values or set publisher to false.
                         """)
 
