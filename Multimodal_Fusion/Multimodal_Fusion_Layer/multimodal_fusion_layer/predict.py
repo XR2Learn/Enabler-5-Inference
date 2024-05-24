@@ -1,3 +1,4 @@
+import logging
 import os
 
 import numpy as np
@@ -13,11 +14,23 @@ from multimodal_fusion_layer.fusion_pub_sub import FusionPublisherSubscriber
 from multimodal_fusion_layer.fusion_schema import get_majority_voting_index
 
 
+def init_logger():
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s [%(levelname)s] %(message)s",
+        handlers=[
+            logging.StreamHandler()
+        ]
+    )
+    logger = logging.getLogger(__name__)
+    return logger
+
+
 def multimodal_prediction():
     meta_data = pd.read_csv(os.path.join(OUTPUT_MODALITY_FOLDER, 'test.csv'))
 
     if PUBLISHER_ON:
-        publish_predicted_emotion(meta_data, DATA_TO_FUSION, DATASET)
+        publish_predicted_emotion()
     else:
         write_predicted_emotion(meta_data, DATA_TO_FUSION, DATASET)
 
@@ -34,10 +47,10 @@ def write_predicted_emotion(meta_data, modalities, dataset="RAVDESS"):
     meta_data.to_csv(os.path.join(OUTPUT_MODALITY_FOLDER, 'predictions.csv'))
 
 
-def publish_predicted_emotion(meta_data, modalities, dataset="RAVDESS"):
+def publish_predicted_emotion():
     redis_cli = redis.Redis(host=REDIS_HOST, port=REDIS_PORT)
-    modality = modalities[0]
-    emotion_publisher = FusionPublisherSubscriber(redis_cli)
+    logger = init_logger()
+    emotion_publisher = FusionPublisherSubscriber(redis_cli, logger)
     print('Listening to the Emotion Detection Channel')
     emotion_publisher.subscribe_unimodal_emotion_classification()
 
@@ -62,12 +75,6 @@ def extract_predictions(modalities, filename):
         all_predictions = single_prediction if all_predictions is None else np.vstack(
             (all_predictions, single_prediction))
     return all_predictions
-
-
-def get_majority_voting_index(predictions):
-    if len(predictions.shape) <= 1:
-        return np.argmax(predictions)
-    return np.argmax(np.sum(predictions, axis=0))
 
 
 def get_majority_voting_index_with_weights(predictions, weights):
