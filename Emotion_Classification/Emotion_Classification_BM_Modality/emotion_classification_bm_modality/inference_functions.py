@@ -54,7 +54,7 @@ def predict_and_save(
         x = np.load(
             os.path.join(prefix_path, data_path)
         )
-        prediction = make_prediction_from_numpy(x)
+        prediction = make_prediction_from_numpy(x, model, transforms)
         np.save(
             os.path.join(destination_path, f'prediction-{input_type}', f"{data_path}"),
             prediction.detach().numpy()
