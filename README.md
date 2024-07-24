@@ -8,7 +8,12 @@ an end-to-end system (together with the Command-Line Interface – CLI).
 Each component is deployed using Docker to ensure easy-to-use components, reproducible development and deployment
 environments, and consistent results.
 
-**Pre-processing**: a component to process raw input data into format and time windows to be used as input for the **Emotion Classification** component.
+**Pre-processing**: a component to process raw input data into format and time windows to be used as input for the
+_Emotion Classification_ component.
+
+**Mock XRoom Writer**: component to support testing pre-processing
+component. _Mock XRoom Writer_ simulates Magic XRoom behaviour of creating and editing files with data from data
+collection sessions.
 
 **Emotion Classification**: a component to recognize emotions. Each modality has a separated emotion classification
 component.
