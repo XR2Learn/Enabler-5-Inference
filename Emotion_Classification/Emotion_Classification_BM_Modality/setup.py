@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='emotion_classification_bm_modality',
-    version='0.5.0',
+    version='0.6.0',
     description='Emotion Classification using bm modality',
     author='UM-XR2Learn-Enablers',
     packages=['emotion_classification_bm_modality'],
