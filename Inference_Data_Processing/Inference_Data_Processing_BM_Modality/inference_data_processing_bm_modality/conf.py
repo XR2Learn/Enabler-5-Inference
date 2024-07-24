@@ -36,35 +36,8 @@ if os.path.exists(PATH_CUSTOM_SETTINGS):
     with open(PATH_CUSTOM_SETTINGS, 'r') as f:
         CUSTOM_SETTINGS = json.load(f)
 
-DATA_PATH = os.path.join(DATASETS_FOLDER, CUSTOM_SETTINGS["dataset_config"]["dataset_name"])
 # Define components outputs folder
 if "modality" in CUSTOM_SETTINGS["dataset_config"]:
     modality = CUSTOM_SETTINGS["dataset_config"]["modality"]
 else:
     modality = "default_modality"
-
-MODALITY_FOLDER = os.path.join(
-    OUTPUTS_FOLDER,
-    CUSTOM_SETTINGS["dataset_config"]["dataset_name"],
-    modality,
-)
-
-
-BM_LABEL_TO_EMOTION = {
-    "01": "BORED",
-    "02": "ENGAGED",
-    "03": "FRUSTRATED"
-}
-BM_EMOTION_TO_LABEL = {
-    "BORED": "01",
-    "ENGAGED": "02",
-    "FRUSTRATED": "03"
-}
-
-ID_TO_LABEL = {
-    0: "BORED",
-    1: "ENGAGED",
-    2: "FRUSTRATED"
-}
-
-PUBLISHER_ON = config('PUBLISHER_ON', default=CUSTOM_SETTINGS['inference_config'].get('publisher', False), cast=bool)

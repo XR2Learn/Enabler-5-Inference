@@ -1,24 +1,49 @@
 # Write Python code here
 import json
+import logging
 import os
 
 import numpy as np
 import torch
 
-from classifiers.linear import LinearClassifier
 from classification_model import SupervisedModel
+from classifiers.linear import LinearClassifier
+from conf import (
+    CUSTOM_SETTINGS,
+    MODALITY_FOLDER,
+    EXPERIMENT_ID,
+    ID_TO_LABEL,
+    REDIS_HOST,
+    REDIS_PORT
+)
+from emotion_classification_bm_modality.conf import PUBLISHER_ON
+from emotionpubsub import init_redis_emocl_pubsub
 from inference_functions import predict_and_save
 from utils.init_utils import init_encoder, init_transforms
-from conf import MODALITY_FOLDER, CUSTOM_SETTINGS, EXPERIMENT_ID
+
+
+def init_logger():
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s [%(levelname)s] %(message)s",
+        handlers=[
+            logging.StreamHandler()
+        ]
+    )
+    logger = logging.getLogger(__name__)
+    return logger
 
 
 def predict():
-    print(json.dumps(CUSTOM_SETTINGS, indent=4))
+    logger = init_logger()
+
+    logger.info("User configurations:")
+    logger.info(json.dumps(CUSTOM_SETTINGS, indent=4))
     split_paths = {"test": "test.csv"}
 
     modality = CUSTOM_SETTINGS['dataset_config']['modality'] if (
             'modality' in CUSTOM_SETTINGS['dataset_config']
-        ) else 'default_modality'
+    ) else 'default_modality'
     ckpt_name = (
         f"{EXPERIMENT_ID}_"
         f"{CUSTOM_SETTINGS['dataset_config']['dataset_name']}_"
@@ -26,6 +51,16 @@ def predict():
         f"{CUSTOM_SETTINGS['sup_config']['input_type']}_"
         f"{CUSTOM_SETTINGS['encoder_config']['class_name']}"
     )
+
+    if (
+            CUSTOM_SETTINGS["inference_config"]["mode"] == "features" and
+            PUBLISHER_ON
+    ):
+        raise ValueError("""
+                         Mode 'features' in not supported for inference with pub/sub protocol
+                         and running inference processing. Please, use 'end-to-end' mode".
+                         """)
+
     # Initialize models:
     # mode == features: use SSL features saved to npy and pass them through classifier
     if CUSTOM_SETTINGS["inference_config"]["mode"] == "features":
@@ -76,15 +111,31 @@ def predict():
     model.eval()
     use_inference_path = "inference_path" in CUSTOM_SETTINGS["inference_config"]
 
-    predict_and_save(
-        model,
-        MODALITY_FOLDER,
-        ckpt_name,
-        os.path.join(MODALITY_FOLDER, split_paths["test"]) if not use_inference_path else None,
-        None if not use_inference_path else CUSTOM_SETTINGS["inference_config"]["inference_path"],
-        prefix_path,
-        transforms
-    )
+    if PUBLISHER_ON:
+        logging.info("Initializing emotion classification pub/sub")
+        emocl_pubsub = init_redis_emocl_pubsub(
+            REDIS_HOST,
+            REDIS_PORT,
+            modality,
+            f"{modality}_data_stream",
+            f"{modality}_data",
+            model,
+            transforms,
+            logger,
+            ID_TO_LABEL
+        )
+        logging.info(f"Listening to {modality}_data_stream channel...")
+        emocl_pubsub.start_processing()
+    else:
+        predict_and_save(
+            model,
+            MODALITY_FOLDER,
+            ckpt_name,
+            os.path.join(MODALITY_FOLDER, split_paths["test"]) if not use_inference_path else None,
+            None if not use_inference_path else CUSTOM_SETTINGS["inference_config"]["inference_path"],
+            prefix_path,
+            transforms
+        )
 
 
 if __name__ == "__main__":

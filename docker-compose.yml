@@ -28,7 +28,10 @@ services:
     working_dir: /app
     environment:
       - EXPERIMENT_ID=${EXPERIMENT_ID:-development-model}
+      - REDIS_HOST=redis
     command: python emotion_classification_bm_modality/predict.py
+    depends_on:
+      - redis
 
   emotion-classification-body-tracking:
     image: some.registry.com/xr2learn-enablers/emotion-classification-body-tracking:latest
@@ -104,4 +107,32 @@ services:
     ports:
       - "8000:8000"
 
+  inference-data-processing-bm:
+    image: some.registry.com/xr2learn-enablers/inference-data-processing-bm:latest
+    build:
+      context: 'Inference_Data_Processing/Inference_Data_Processing_BM_Modality'
+      dockerfile: 'Dockerfile'
+    volumes:
+      - "./Inference_Data_Processing/Inference_Data_Processing_BM_Modality:/app"
+      - "./datasets:/app/datasets"
+      - "./outputs:/app/outputs"
+      - "${CONFIG_FILE_PATH:-./configuration.json}:/app/configuration.json"
+    working_dir: /app
+    environment:
+      - EXPERIMENT_ID=${EXPERIMENT_ID:-development-model}
+      - REDIS_HOST=redis
+    command: python inference_data_processing_bm_modality/process_data.py
+    depends_on:
+      - redis
 
+  mock-xroom-writer-bm:
+    image: some.registry.com/xr2learn-enablers/mock-xroom-writer-bm:latest
+    build:
+      context: 'Mock_XRoom_Writer/Mock_XRoom_Writer_BM_Modality'
+      dockerfile: 'Dockerfile'
+    volumes:
+      - "./datasets/:/app/datasets"
+      - "./outputs:/app/outputs"
+      - "${CONFIG_FILE_PATH:-./configuration.json}:/app/configuration.json"
+    working_dir: /app
+    command: python mock_xroom_writer_bm_modality/mock_xroom_writer.py
