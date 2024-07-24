@@ -121,4 +121,6 @@ Please refer to [LICENSE.md](LICENSE.md) document for more details.
 
 A description of the main changes in the project’s versions can be found at [CHANGELOG.md].
 
-[CHANGELOG.md]: https://github.com/um-xr2learn-enablers/XR2Learn-Inference/blob/master/CHANGELOG.md
+To check your current version, go to the file [setup.cfg](setup.cfg).
+
+[CHANGELOG.md]: CHANGELOG.md
