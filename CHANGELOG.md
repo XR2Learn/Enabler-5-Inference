@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0] - 2024 - 07 - 24
+
 ## Added
 
 - Pre-processing component (Bio measurements modality): an additional component to read and process the data output
@@ -124,7 +126,7 @@ Example of Categories to use in each release
 - Just an example of how to use changelog. -->
 
 
-[unreleased]: https://github.com/XR2Learn/Enabler-5-Inference/compare/v0.5.0...master
+[unreleased]: https://github.com/XR2Learn/Enabler-5-Inference/compare/v0.6.0...master
 
 [0.1.0]: https://github.com/XR2Learn/Enabler-5-Inference/releases/tag/v0.1.0
 
@@ -139,3 +141,5 @@ Example of Categories to use in each release
 [0.4.0]: https://github.com/XR2Learn/Enabler-5-Inference/releases/tag/v0.4.0
 
 [0.5.0]: https://github.com/XR2Learn/Enabler-5-Inference/releases/tag/v0.5.0
+
+[0.6.0]: https://github.com/XR2Learn/Enabler-5-Inference/releases/tag/v0.6.0
