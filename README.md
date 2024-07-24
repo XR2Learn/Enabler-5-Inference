@@ -1,4 +1,4 @@
-# [XR2Learn Emotion Recognition] Inference Tools
+# [XR2Learn Personalization Enablers] Inference Tools
 
 These tools are designed for the unimodal and multimodal emotion classification and evaluation in XR2Learn. This set of
 tools includes Emotion Classification (per modality), Multimodal Fusion and Evaluation components. Each tool is a
@@ -7,6 +7,8 @@ an end-to-end system (together with the Command-Line Interface – CLI).
 
 Each component is deployed using Docker to ensure easy-to-use components, reproducible development and deployment
 environments, and consistent results.
+
+**Pre-processing**: a component to process raw input data into format and time windows to be used as input for the **Emotion Classification** component.
 
 **Emotion Classification**: a component to recognize emotions. Each modality has a separated emotion classification
 component.
