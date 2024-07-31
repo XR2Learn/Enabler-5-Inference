@@ -1,0 +1,6 @@
+numpy<1.28.0,>=1.21.6
+python-decouple==3.6
+pandas==1.5.3
+redis==5.0.1
+scipy==1.11.1
+-e file:./#egg=inference_data_processing_body_tracking_modality
