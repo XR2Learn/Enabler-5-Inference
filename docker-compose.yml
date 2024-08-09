@@ -46,7 +46,10 @@ services:
     working_dir: /app
     environment:
       - EXPERIMENT_ID=${EXPERIMENT_ID:-development-model}
+      - REDIS_HOST=redis
     command: python emotion_classification_body_tracking_modality/predict.py
+    depends_on:
+      - redis
 
   fusion-layer:
     image: some.registry.com/xr2learn-enablers/fusion-layer:latest
