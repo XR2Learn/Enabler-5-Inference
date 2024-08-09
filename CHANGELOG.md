@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Inference body-tracking components:
+  - Inference data processing from Magic XRoom
+  - Emotion classification inference using model checkpoint
+
 ## [0.6.0] - 2024 - 07 - 24
 
 ## Added
