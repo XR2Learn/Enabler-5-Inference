@@ -28,7 +28,8 @@ def launch_processing():
 
     delay = CUSTOM_SETTINGS["inference_config"]["data_processing"]["reading_delay"]
 
-    window_size = CUSTOM_SETTINGS["pre_processing_config"]["segment_size"]
+    window_size = CUSTOM_SETTINGS["pre_processing_config"]["seq_len"] *\
+        CUSTOM_SETTINGS["pre_processing_config"]["frequency"]
 
     data_publisher = init_redis_data_publisher(
         REDIS_HOST,
