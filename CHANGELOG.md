@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Inference data processing from Magic XRoom
   - Emotion classification inference using model checkpoint
 
+### Changed
+
+- Update mock writer to work with two modalities: shimmer and vr (body-tracking)
+
 ## [0.6.0] - 2024 - 07 - 24
 
 ## Added
