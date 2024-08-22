@@ -146,14 +146,14 @@ services:
     depends_on:
       - redis
 
-  mock-xroom-writer-bm:
-    image: some.registry.com/xr2learn-enablers/mock-xroom-writer-bm:latest
+  mock-xroom-writer:
+    image: some.registry.com/xr2learn-enablers/mock-xroom-writer:latest
     build:
-      context: 'Mock_XRoom_Writer/Mock_XRoom_Writer_BM_Modality'
+      context: 'Mock_XRoom_Writer/Mock_XRoom_Writer_BM_BT_Modality'
       dockerfile: 'Dockerfile'
     volumes:
       - "./datasets/:/app/datasets"
       - "./outputs:/app/outputs"
       - "${CONFIG_FILE_PATH:-./configuration.json}:/app/configuration.json"
     working_dir: /app
-    command: python mock_xroom_writer_bm_modality/mock_xroom_writer.py
+    command: python mock_xroom_writer_bm_bt_modality/mock_xroom_writer.py

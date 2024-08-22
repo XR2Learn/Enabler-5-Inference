@@ -11,8 +11,8 @@ RUN apt-get update \
         vim
 COPY ./requirements.txt /app/requirements.txt
 COPY ./setup.py /app/setup.py
-RUN mkdir -p /app/mock_xroom_writer_bm_modality/ && \
-    touch /app/mock_xroom_writer_bm_modality/__init__.py
+RUN mkdir -p /app/mock_xroom_writer_bm_bt_modality/ && \
+    touch /app/mock_xroom_writer_bm_bt_modality/__init__.py
 WORKDIR /app
 RUN pip install -r requirements.txt && \
     rm -rf /tmp/pip* /root/.cache/pip
