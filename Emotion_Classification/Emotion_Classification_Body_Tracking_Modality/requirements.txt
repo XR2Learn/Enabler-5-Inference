@@ -1,3 +1,12 @@
 --extra-index-url https://download.pytorch.org/whl/cpu
 python-decouple==3.6
+pandas==2.0.3
+numpy==1.24.3
+scikit-learn==1.3.0
+xgboost==2.0.3
+tensorflow-cpu==2.15.0
+torch==2.2.1
+requests==2.31.0
+sox==1.4.1
+redis==5.0.1
 -e file:./#egg=emotion_classification_body_tracking_modality

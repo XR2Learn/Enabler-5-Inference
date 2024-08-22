@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Inference body-tracking components:
+  - Inference data processing from Magic XRoom
+  - Emotion classification inference using model checkpoint (the checkpoint trained model is not using handcrafted features from the training tools)
+
+### Changed
+
+- Update mock writer to work with two modalities: shimmer and vr (body-tracking)
+- 
+
+
 ## [0.6.0] - 2024 - 07 - 24
 
 ## Added

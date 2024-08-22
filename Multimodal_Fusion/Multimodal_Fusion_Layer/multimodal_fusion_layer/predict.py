@@ -8,8 +8,8 @@ from tqdm import tqdm
 
 from multimodal_fusion_layer.conf import (ID_TO_LABEL, REDIS_HOST, REDIS_PORT,
                                           PUBLISHER_ON, OUTPUT_MODALITY_FOLDER,
-                                          DATA_TO_FUSION, DATASET, CUSTOM_SETTINGS,
-                                          EXPERIMENT_ID, MODALITY)
+                                          DATASET, CUSTOM_SETTINGS,
+                                          EXPERIMENT_ID, MODALITY, SUPPORTED_MODALITIES)
 from multimodal_fusion_layer.fusion_pub_sub import FusionPublisherSubscriber
 from multimodal_fusion_layer.fusion_schema import get_majority_voting_index
 
@@ -27,9 +27,9 @@ def init_logger():
 
 
 def multimodal_prediction():
-    meta_data = pd.read_csv(os.path.join(OUTPUT_MODALITY_FOLDER, 'test.csv'))
+    # meta_data = pd.read_csv(os.path.join(OUTPUT_MODALITY_FOLDER, 'test.csv'))
 
-    if PUBLISHER_ON and MODALITY != 'shimmer':
+    if PUBLISHER_ON and MODALITY not in SUPPORTED_MODALITIES:
         raise ValueError("""
                         Migration for Pub/Sub protocol not yet available for this modality or dataset.
                         Please change the dataset/modality values or set publisher to false.
@@ -38,7 +38,11 @@ def multimodal_prediction():
     if PUBLISHER_ON:
         publish_predicted_emotion()
     else:
-        write_predicted_emotion(meta_data, DATA_TO_FUSION, DATASET)
+        raise ValueError("""
+                            Inference Multimodal only supports Pub/Sub protocol.
+                            Please change the publisher_on value to true.
+                            """)
+        # write_predicted_emotion(meta_data, DATA_TO_FUSION, DATASET)
 
 
 def write_predicted_emotion(meta_data, modalities, dataset="RAVDESS"):
