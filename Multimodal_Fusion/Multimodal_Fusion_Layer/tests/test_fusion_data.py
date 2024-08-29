@@ -18,6 +18,10 @@ class FusionPublisherSubscriberXRoomDatasetTestCase(unittest.TestCase):
 
     def test_unimodal_fusion_same_session_id(self):
         message = {
-            "session_id": "", "modality": "", "emotion_classification_output": []
+            "session_id": "638461160214938655", "modality": "shimmer",
+            "emotion_classification_output": [-0.31271907687187195, 0.20892557501792908, 0.07698042690753937]
         }
+        self.assertFalse(self.fusion_layer_publisher.bm_window)
         self.fusion_layer_publisher.process_unimodal_emotion_classification(message)
+        self.assertEqual(message['session_id'], self.fusion_layer_publisher.current_session_id)
+        self.assertFalse(self.fusion_layer_publisher.bm_window)
