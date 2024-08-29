@@ -73,10 +73,10 @@ class FusionPublisherSubscriberXRoomDataset:
 
         self.process_modality_data(session_id, modality, message_received)
 
-        fused_data = self.process_fusion_data()
+        fused_data, is_ready_to_publish = self.process_fusion_data(modality)
 
-        if fused_data:
-            fused_emotion = process_prediction('XRoom', message_received)
+        if is_ready_to_publish:
+            fused_emotion = process_prediction('XRoom', fused_data)
             self.publish_emotion(fused_emotion)
 
     def process_modality_data(self, session_id, modality, message_received):
@@ -93,11 +93,14 @@ class FusionPublisherSubscriberXRoomDataset:
 
             # increment data here, with information of session already running
             else:
-                pass
+                self.bm_window.append(message_received)
 
-    def process_fusion_data(self):
+    def process_fusion_data(self, modality):
         print('Process Fusion Data')
-        return True
+        if not self.is_multimodal and modality == 'shimmer':
+            return self.bm_window.pop(), True
+        else:
+            return [], False
 
 
 if __name__ == '__main__':
