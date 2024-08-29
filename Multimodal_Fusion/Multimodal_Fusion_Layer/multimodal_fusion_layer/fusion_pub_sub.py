@@ -9,13 +9,15 @@ from multimodal_fusion_layer.fusion_schema import process_prediction
 
 
 class FusionPublisherSubscriber:
-    def __init__(self, redis_cli, logger):
+    def __init__(self, redis_cli, logger, is_multimodal=False):
         self.redis_cli = redis_cli
         self.pubsub = self.redis_cli.pubsub()
         self.sub_event_types = {
             'emotion_classification_output_stream': self.handle_unimodal_emotion_classification
         }
         self.logger = logger
+        self.current_session_id = None
+        self.is_multimodal = is_multimodal
 
     def publish_emotion(self, emotion_index):
         event_type = 'emotion'
@@ -63,11 +65,26 @@ class FusionPublisherSubscriber:
         self.logger.info("Message received!")
         message_data = json.loads(message['data'])
         self.logger.info(f"{message_data}")
-        # modality to be used later when having more than one modality
+
+        session_id = message_data['session_id']
         modality = message_data['modality']
         message_received = message_data[f'emotion_classification_output']
-        data_to_publish = process_prediction('XRoom', message_received)
-        self.publish_emotion(data_to_publish)
+
+        self.process_modality_data(session_id, modality, message_received)
+
+        fused_data = self.process_fusion_data()
+
+        if fused_data:
+            fused_emotion = process_prediction('XRoom', message_received)
+            self.publish_emotion(fused_emotion)
+
+    def process_modality_data(self, session_id, modality, message_received):
+        print('Process modality Data')
+        pass
+
+    def process_fusion_data(self):
+        print('Process Fusion Data')
+        return True
 
 
 if __name__ == '__main__':
