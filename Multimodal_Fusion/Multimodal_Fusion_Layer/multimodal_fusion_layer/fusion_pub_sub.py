@@ -8,7 +8,7 @@ from multimodal_fusion_layer.conf import REDIS_HOST, REDIS_PORT
 from multimodal_fusion_layer.fusion_schema import process_prediction
 
 
-class FusionPublisherSubscriber:
+class FusionPublisherSubscriberXRoomDataset:
     def __init__(self, redis_cli, logger, is_multimodal=False):
         self.redis_cli = redis_cli
         self.pubsub = self.redis_cli.pubsub()
@@ -18,6 +18,7 @@ class FusionPublisherSubscriber:
         self.logger = logger
         self.current_session_id = None
         self.is_multimodal = is_multimodal
+        self.bm_window = []
 
     def publish_emotion(self, emotion_index):
         event_type = 'emotion'
@@ -80,7 +81,19 @@ class FusionPublisherSubscriber:
 
     def process_modality_data(self, session_id, modality, message_received):
         print('Process modality Data')
-        pass
+        # If current_session_id is empty, start new session
+        if not self.current_session_id:
+            self.current_session_id = session_id
+
+        else:
+
+            if self.current_session_id != session_id:
+                # Clean data here & start new session
+                pass
+
+            # increment data here, with information of session already running
+            else:
+                pass
 
     def process_fusion_data(self):
         print('Process Fusion Data')
@@ -90,7 +103,7 @@ class FusionPublisherSubscriber:
 if __name__ == '__main__':
     redis_cli = redis.Redis(host=REDIS_HOST, port=REDIS_PORT)
 
-    emotion_publisher = FusionPublisherSubscriber(redis_cli)
+    emotion_publisher = FusionPublisherSubscriberXRoomDataset(redis_cli)
     time.sleep(5)
     emotion_publisher.start_activity()
     time.sleep(20)

@@ -10,7 +10,7 @@ from multimodal_fusion_layer.conf import (ID_TO_LABEL, REDIS_HOST, REDIS_PORT,
                                           PUBLISHER_ON, OUTPUT_MODALITY_FOLDER,
                                           DATASET, CUSTOM_SETTINGS,
                                           EXPERIMENT_ID, MODALITY, SUPPORTED_MODALITIES)
-from multimodal_fusion_layer.fusion_pub_sub import FusionPublisherSubscriber
+from multimodal_fusion_layer.fusion_pub_sub import FusionPublisherSubscriberXRoomDataset
 from multimodal_fusion_layer.fusion_schema import get_majority_voting_index
 
 
@@ -60,7 +60,7 @@ def write_predicted_emotion(meta_data, modalities, dataset="RAVDESS"):
 def publish_predicted_emotion():
     redis_cli = redis.Redis(host=REDIS_HOST, port=REDIS_PORT)
     logger = init_logger()
-    emotion_publisher = FusionPublisherSubscriber(redis_cli, logger)
+    emotion_publisher = FusionPublisherSubscriberXRoomDataset(redis_cli, logger)
     print('Listening to the Emotion Detection Channel')
     emotion_publisher.subscribe_unimodal_emotion_classification()
 
