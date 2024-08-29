@@ -82,7 +82,7 @@ class FusionPublisherSubscriberXRoomDataset:
     def process_modality_data(self, session_id, modality, message_received):
         print('Process modality Data')
         # If current_session_id is empty, start new session
-        if not self.current_session_id:
+        if not self.current_session_id and modality == "shimmer":
             self.current_session_id = session_id
             self.bm_window.append(message_received)
         else:
