@@ -67,17 +67,7 @@ class FusionPublisherSubscriberXRoomDataset:
         message_data = json.loads(message['data'])
         self.logger.info(f"{message_data}")
 
-        session_id = message_data['session_id']
-        modality = message_data['modality']
-        message_received = message_data[f'emotion_classification_output']
-
-        self.process_modality_data(session_id, modality, message_received)
-
-        fused_data, is_ready_to_publish = self.process_fusion_data(modality)
-
-        if is_ready_to_publish:
-            fused_emotion = process_prediction('XRoom', fused_data)
-            self.publish_emotion(fused_emotion)
+        self.process_unimodal_emotion_classification(message_data)
 
     def process_modality_data(self, session_id, modality, message_received):
         print('Process modality Data')
@@ -106,6 +96,19 @@ class FusionPublisherSubscriberXRoomDataset:
     def clean_window_data(self, session_id, message_received):
         self.current_session_id = session_id
         self.bm_window = [message_received]
+
+    def process_unimodal_emotion_classification(self, message_data):
+        session_id = message_data['session_id']
+        modality = message_data['modality']
+        message_received = message_data[f'emotion_classification_output']
+
+        self.process_modality_data(session_id, modality, message_received)
+
+        fused_data, is_ready_to_publish = self.process_fusion_data(modality)
+
+        if is_ready_to_publish:
+            fused_emotion = process_prediction('XRoom', fused_data)
+            self.publish_emotion(fused_emotion)
 
 
 if __name__ == '__main__':
