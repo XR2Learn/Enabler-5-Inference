@@ -84,7 +84,7 @@ class FusionPublisherSubscriberXRoomDataset:
         # If current_session_id is empty, start new session
         if not self.current_session_id:
             self.current_session_id = session_id
-
+            self.bm_window.append(message_received)
         else:
 
             if self.current_session_id != session_id:
