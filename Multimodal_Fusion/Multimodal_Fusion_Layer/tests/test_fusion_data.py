@@ -29,7 +29,8 @@ class FusionPublisherSubscriberXRoomDatasetTestCase(unittest.TestCase):
     def test_unimodal_bt_add_remove_from_window(self):
         message = {
             "session_id": "638461160214938655", "modality": "body-tracking",
-            "emotion_classification_output": [-0.31271907687187195, 0.20892557501792908, 0.07698042690753937]
+            "emotion_classification_output": [0.14364197850227356, 0.13539950549602509, 0.7183650135993958,
+                                              0.0025935652665793896]
         }
         self.assertFalse(self.fusion_layer_publisher.modality_windows["body-tracking"])
         self.fusion_layer_publisher.process_unimodal_emotion_classification(message)
