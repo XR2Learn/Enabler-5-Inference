@@ -4,12 +4,12 @@
 echo "--------------------"
 docker compose start dashboard
 echo "--------------------"
-#docker compose start emotion-classification-bm
+docker compose start emotion-classification-bm
 echo "--------------------"
-docker compose start emotion-classification-body-tracking
+#docker compose start emotion-classification-body-tracking
 echo "--------------------"
-#docker compose start inference-data-processing-bm
+docker compose start inference-data-processing-bm
 echo "--------------------"
-docker compose start inference-data-processing-body-tracking
+#docker compose start inference-data-processing-body-tracking
 echo "--------------------"
 docker compose start mock-xroom-writer
