@@ -18,7 +18,8 @@ class FusionPublisherSubscriberXRoomDataset:
         self.logger = logger
         self.current_session_id = None
         self.is_multimodal = is_multimodal
-        self.bm_window = []
+        self.modality_windows = {'shimmer': [], 'body-tracking': []}
+        # self.bm_window = []
 
     def publish_emotion(self, emotion_index):
         event_type = 'emotion'
@@ -73,29 +74,34 @@ class FusionPublisherSubscriberXRoomDataset:
         print('Process modality Data')
 
         # If current_session_id is empty, start new session
-        if not self.current_session_id and modality == "shimmer":
+        if not self.current_session_id:
+            # and modality == "shimmer":
             self.current_session_id = session_id
-            self.bm_window.append(message_received)
+            self.modality_windows[modality].append(message_received)
+            # self.bm_window.append(message_received)
 
         else:
             if self.current_session_id != session_id:
                 # Clean data here & start new session
-                self.clean_window_data(session_id, message_received)
+                self.clean_window_data(session_id)
+                self.modality_windows[modality].append(message_received)
 
             # increment data here, with information of session already running
             else:
-                self.bm_window.append(message_received)
+                self.modality_windows[modality].append(message_received)
+                # self.bm_window.append(message_received)
 
     def process_fusion_data(self, modality):
         print('Process Fusion Data')
         if not self.is_multimodal and modality == 'shimmer':
-            return self.bm_window.pop(), True
+            return self.modality_windows[modality].pop(), True
         else:
             return [], False
 
-    def clean_window_data(self, session_id, message_received):
+    def clean_window_data(self, session_id):
         self.current_session_id = session_id
-        self.bm_window = [message_received]
+        for modality in self.modality_windows.keys():
+            self.modality_windows[modality] = []
 
     def process_unimodal_emotion_classification(self, message_data):
         session_id = message_data['session_id']
