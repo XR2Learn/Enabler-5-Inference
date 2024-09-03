@@ -16,12 +16,22 @@ class FusionPublisherSubscriberXRoomDatasetTestCase(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_unimodal_fusion_same_session_id(self):
+    def test_unimodal_bm_add_remove_from_window(self):
         message = {
             "session_id": "638461160214938655", "modality": "shimmer",
             "emotion_classification_output": [-0.31271907687187195, 0.20892557501792908, 0.07698042690753937]
         }
-        self.assertFalse(self.fusion_layer_publisher.bm_window)
+        self.assertFalse(self.fusion_layer_publisher.modality_windows["shimmer"])
         self.fusion_layer_publisher.process_unimodal_emotion_classification(message)
         self.assertEqual(message['session_id'], self.fusion_layer_publisher.current_session_id)
-        self.assertFalse(self.fusion_layer_publisher.bm_window)
+        self.assertFalse(self.fusion_layer_publisher.modality_windows["shimmer"])
+
+    def test_unimodal_bt_add_remove_from_window(self):
+        message = {
+            "session_id": "638461160214938655", "modality": "body-tracking",
+            "emotion_classification_output": [-0.31271907687187195, 0.20892557501792908, 0.07698042690753937]
+        }
+        self.assertFalse(self.fusion_layer_publisher.modality_windows["body-tracking"])
+        self.fusion_layer_publisher.process_unimodal_emotion_classification(message)
+        self.assertEqual(message['session_id'], self.fusion_layer_publisher.current_session_id)
+        self.assertFalse(self.fusion_layer_publisher.modality_windows["body-tracking"])
