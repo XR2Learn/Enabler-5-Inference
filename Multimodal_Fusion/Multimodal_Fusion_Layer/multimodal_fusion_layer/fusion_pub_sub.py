@@ -70,7 +70,7 @@ class FusionPublisherSubscriberXRoomDataset:
 
         self.process_unimodal_emotion_classification(message_data)
 
-    def process_modality_data(self, session_id, modality, message_received):
+    def include_modality_data_into_windows(self, session_id, modality, message_received):
         print('Process modality Data')
 
         # If current_session_id is empty, start new session
@@ -89,11 +89,25 @@ class FusionPublisherSubscriberXRoomDataset:
                 self.modality_windows[modality].append(message_received)
 
     def process_fusion_data(self, modality):
+        """
+        :param modality: the modality from XRoom data
+        :return: (List, Boolean) a list with emotion prediction from one modality or the fusion of multimodal and
+        if it is ready to publish
+        """
         print('Process Fusion Data')
         if not self.is_multimodal:
+            # no matter if it is the same session id or not, just get the value of the last element
+            # from window and return it
             return self.modality_windows[modality].pop(), True
+
         else:
-            return [], False
+            # to merge bm and bt, we need:
+            # at least 1 element of bm and 5 elements of bt
+            if (len(self.modality_windows['shimmer']) > 0) and (len(self.modality_windows['body-tracking']) > 4):
+                fused_data = self.execute_fusion_data()
+                return fused_data, True
+            else:
+                return [], False
 
     def clean_window_data(self, session_id):
         self.current_session_id = session_id
@@ -105,13 +119,17 @@ class FusionPublisherSubscriberXRoomDataset:
         modality = message_data['modality']
         message_received = message_data[f'emotion_classification_output']
 
-        self.process_modality_data(session_id, modality, message_received)
+        self.include_modality_data_into_windows(session_id, modality, message_received)
 
         fused_data, is_ready_to_publish = self.process_fusion_data(modality)
 
         if is_ready_to_publish:
             fused_emotion = process_prediction('XRoom', fused_data)
             self.publish_emotion(fused_emotion)
+
+    def execute_fusion_data(self):
+        # Stopped here!
+        return []
 
 
 if __name__ == '__main__':
