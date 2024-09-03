@@ -60,7 +60,8 @@ def write_predicted_emotion(meta_data, modalities, dataset="RAVDESS"):
 def publish_predicted_emotion():
     redis_cli = redis.Redis(host=REDIS_HOST, port=REDIS_PORT)
     logger = init_logger()
-    emotion_publisher = FusionPublisherSubscriberXRoomDataset(redis_cli, logger)
+    # Change the value of is_multimodal
+    emotion_publisher = FusionPublisherSubscriberXRoomDataset(redis_cli, logger, is_multimodal=True)
     print('Listening to the Emotion Detection Channel')
     emotion_publisher.subscribe_unimodal_emotion_classification()
 
