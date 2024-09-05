@@ -2,6 +2,7 @@ import json
 import time
 from random import randint
 
+import numpy as np
 import redis
 
 from multimodal_fusion_layer.conf import REDIS_HOST, REDIS_PORT
@@ -128,8 +129,28 @@ class FusionPublisherSubscriberXRoomDataset:
             self.publish_emotion(fused_emotion)
 
     def execute_fusion_data(self):
-        # Stopped here!
-        return []
+        bm_prediction = self.modality_windows['shimmer'].pop(0)
+        bt_prediction_match_window = self.modality_windows['body-tracking'].pop(0)
+
+        bt_prediction = self.combine_xroom_bt_window_prediction(bt_prediction_match_window)
+
+        modalities_prediction = [bm_prediction, bt_prediction]
+        fused_data = self.fusion_schema(modalities_prediction)
+        return fused_data
+
+    def combine_xroom_bt_window_prediction(self, bt_prediction_match_window):
+        # stopped here
+        # do a majority voting for body tracking emotions
+        pass
+
+    def fusion_schema(self, modalities_prediction):
+        # stopped here
+
+        # do an average in the prediction vector to make the fusion
+
+        # check if both prediction has the same dimension vector
+        fused_data = np.mean(modalities_prediction, axis=0)
+        return fused_data
 
 
 if __name__ == '__main__':
