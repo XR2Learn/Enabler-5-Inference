@@ -103,7 +103,7 @@ class FusionPublisherSubscriberXRoomDataset:
 
         else:
             # to merge bm and bt, we need:
-            # at least 1 element of bm and 5 elements of bt
+            # at least 1 element of bm and 5 elements of bt (change these numbers to be configured and not hot coded)
             if (len(self.modality_windows['shimmer']) > 0) and (len(self.modality_windows['body-tracking']) > 4):
                 fused_data = self.execute_fusion_data()
                 return fused_data, True
@@ -139,9 +139,16 @@ class FusionPublisherSubscriberXRoomDataset:
         return fused_data
 
     def combine_xroom_bt_window_prediction(self, bt_prediction_match_window):
+        """
+        Combined different predictions from a modality into one single prediction, to match other modality time window
+        :param bt_prediction_match_window: a vector with 5 predictions from the bt modality
+        :return: vector with a single prediction for bt modality
+        """
         # stopped here
-        # do a majority voting for body tracking emotions
-        pass
+        # do a majority voting for body tracking emotions - see the emotion most present and randomly
+        # select only prediction vector of that emotion
+        modality_prediction = self.calculate_majority_vote_for_predictions(bt_prediction_match_window)
+        return modality_prediction
 
     def fusion_schema(self, modalities_prediction):
         # stopped here
@@ -151,6 +158,19 @@ class FusionPublisherSubscriberXRoomDataset:
         # check if both prediction has the same dimension vector
         fused_data = np.mean(modalities_prediction, axis=0)
         return fused_data
+
+    def calculate_majority_vote_for_predictions(self, bt_prediction_match_window):
+        random_most_voted_prediction = []
+        predicted_emotions = []
+        for prediction in bt_prediction_match_window:
+            predicted_emotions.append(np.argmax(prediction))
+
+        # stopped here
+
+        # check which emotion is the most present
+        # get the first prediction vector of the most present emotion to return
+
+        return random_most_voted_prediction
 
 
 if __name__ == '__main__':
