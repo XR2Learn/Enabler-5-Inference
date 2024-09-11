@@ -161,19 +161,17 @@ class FusionPublisherSubscriberXRoomDataset:
         return fused_data
 
     def calculate_majority_vote_for_predictions(self, bt_prediction_match_window):
-        random_most_voted_prediction = []
         predicted_emotions = []
         for prediction in bt_prediction_match_window:
             predicted_emotions.append(np.argmax(prediction))
 
-        # stopped here
         counter = Counter(predicted_emotions)
-        most_predicted_emotion = counter.most_common()[0][0]
-        random_most_voted_prediction = predicted_emotions.index(most_predicted_emotion)
-        random_most_voted_prediction = bt_prediction_match_window[random_most_voted_prediction]
         # check which emotion is the most present
+        most_predicted_emotion = counter.most_common()[0][0]
         # get the first prediction vector of the most present emotion to return
-        return random_most_voted_prediction
+        first_most_voted_prediction = predicted_emotions.index(most_predicted_emotion)
+        first_most_voted_prediction = bt_prediction_match_window[first_most_voted_prediction]
+        return first_most_voted_prediction
 
 
 if __name__ == '__main__':
