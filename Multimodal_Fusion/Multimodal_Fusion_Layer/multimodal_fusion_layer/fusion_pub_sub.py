@@ -152,11 +152,11 @@ class FusionPublisherSubscriberXRoomDataset:
         return modality_prediction
 
     def fusion_schema(self, modalities_prediction):
-        # stopped here
-
-        # do an average in the prediction vector to make the fusion
-
         # check if both prediction has the same dimension vector
+        if len(modalities_prediction[0]) < len(modalities_prediction[1]):
+            # drop the additional dimension from bt modality
+            _ = modalities_prediction[1].pop()
+        # do an average in the prediction vector to make the fusion
         fused_data = np.mean(modalities_prediction, axis=0)
         return fused_data
 

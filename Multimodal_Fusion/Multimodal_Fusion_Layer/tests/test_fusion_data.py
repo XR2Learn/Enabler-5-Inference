@@ -47,3 +47,9 @@ class FusionPublisherSubscriberXRoomDatasetTestCase(unittest.TestCase):
         ]
         prediction = self.fusion_layer_publisher.calculate_majority_vote_for_predictions(bt_prediction_match_window)
         self.assertListEqual(bt_prediction_match_window[0], prediction)
+
+    def test_fusion_schema(self):
+        modality_predictions = [[-0.31271907687187195, 0.20892557501792908, 0.07698042690753937],
+                                [0.14364197850227356, 0.13539950549602509, 0.7183650135993958, 0.0025935652665793896]]
+        fused_data = list(self.fusion_layer_publisher.fusion_schema(modality_predictions))
+        self.assertListEqual(fused_data, [-0.0845385491847992,  0.17216254025697708,  0.39767272025346756])
