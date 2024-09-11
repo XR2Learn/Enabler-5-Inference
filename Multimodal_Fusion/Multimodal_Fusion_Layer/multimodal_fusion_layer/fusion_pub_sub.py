@@ -1,5 +1,6 @@
 import json
 import time
+from collections import Counter
 from random import randint
 
 import numpy as np
@@ -166,10 +167,12 @@ class FusionPublisherSubscriberXRoomDataset:
             predicted_emotions.append(np.argmax(prediction))
 
         # stopped here
-
+        counter = Counter(predicted_emotions)
+        most_predicted_emotion = counter.most_common()[0][0]
+        random_most_voted_prediction = predicted_emotions.index(most_predicted_emotion)
+        random_most_voted_prediction = bt_prediction_match_window[random_most_voted_prediction]
         # check which emotion is the most present
         # get the first prediction vector of the most present emotion to return
-
         return random_most_voted_prediction
 
 

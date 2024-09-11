@@ -36,3 +36,14 @@ class FusionPublisherSubscriberXRoomDatasetTestCase(unittest.TestCase):
         self.fusion_layer_publisher.process_unimodal_emotion_classification(message)
         self.assertEqual(message['session_id'], self.fusion_layer_publisher.current_session_id)
         self.assertFalse(self.fusion_layer_publisher.modality_windows["body-tracking"])
+
+    def test_calculate_majority_vote_for_predictions(self):
+        bt_prediction_match_window = [
+            [0.14364197850227356, 0.13539950549602509, 0.7183650135993958, 0.0025935652665793896],
+            [0.13539950549602509, 0.7183650135993958, 0.14364197850227356, 0.0025935652665793896],
+            [0.14364197850227356, 0.67539950549602509, 0.7183650135993958, 0.0025935652665793896],
+            [0.7183650135993958, 0.13539950549602509, 0.13539950549602509, 0.0025935652665793896],
+            [0.14364197850227356, 0.7183650135993958, 0.13539950549602509, 0.0025935652665793896]
+        ]
+        prediction = self.fusion_layer_publisher.calculate_majority_vote_for_predictions(bt_prediction_match_window)
+        self.assertListEqual(bt_prediction_match_window[0], prediction)
