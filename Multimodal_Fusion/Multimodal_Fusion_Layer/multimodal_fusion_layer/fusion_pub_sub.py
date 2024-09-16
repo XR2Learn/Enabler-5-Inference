@@ -73,7 +73,7 @@ class FusionPublisherSubscriberXRoomDataset:
         self.process_unimodal_emotion_classification(message_data)
 
     def include_modality_data_into_windows(self, session_id, modality, message_received):
-        print('Process modality Data')
+        print(f'Process modality Data: {modality}')
 
         # If current_session_id is empty, start new session
         if not self.current_session_id:
@@ -130,8 +130,8 @@ class FusionPublisherSubscriberXRoomDataset:
             self.publish_emotion(fused_emotion)
 
     def execute_fusion_data(self):
-        bm_prediction = self.modality_windows['shimmer'].pop(0)
-        bt_prediction_match_window = self.modality_windows['body-tracking'].pop(0)
+        bm_prediction = self.cut_modality_windows("shimmer", 1)
+        bt_prediction_match_window = self.cut_modality_windows('body-tracking', 5)
 
         bt_prediction = self.combine_xroom_bt_window_prediction(bt_prediction_match_window)
 
@@ -172,6 +172,16 @@ class FusionPublisherSubscriberXRoomDataset:
         first_most_voted_prediction = predicted_emotions.index(most_predicted_emotion)
         first_most_voted_prediction = bt_prediction_match_window[first_most_voted_prediction]
         return first_most_voted_prediction
+
+    def cut_modality_windows(self, modality, size):
+        prediction = []
+        for i in range(size):
+            prediction_from_window = self.modality_windows[modality].pop(0)
+            prediction.append(prediction_from_window)
+        if len(prediction) == 1:
+            return prediction[0]
+        else:
+            return prediction
 
 
 if __name__ == '__main__':
