@@ -81,6 +81,8 @@ class FusionPublisherSubscriberXRoomDataset:
             self.modality_windows[modality].append(message_received)
 
         else:
+            # right now, only supports dealing with one session_id per time, by receiving a new message of a new
+            # session_id, it will clear the window data from all modalities.
             if self.current_session_id != session_id:
                 # Clean data here & start new session
                 self.clean_window_data(session_id)
