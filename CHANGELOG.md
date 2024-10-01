@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Update mock writer to work with two modalities: shimmer and vr (body-tracking)
 - Fusion Layer implementation for uni/multimodal: now take into account the data window (frequency * seq_len)
+- Configuration file structure to encompass multimodality capability
 
 
 ## [0.6.0] - 2024 - 07 - 24
