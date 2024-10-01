@@ -21,6 +21,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fusion Layer implementation for uni/multimodal: now take into account the data window (frequency * seq_len)
 - Configuration file structure to encompass multimodality capability
 
+### Removed
+
+- Support for non-streaming inference for BM and body tracking modalities (XRoom dataset)
+
 
 ## [0.6.0] - 2024 - 07 - 24
 

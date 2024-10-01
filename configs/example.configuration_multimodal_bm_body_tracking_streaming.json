@@ -4,6 +4,10 @@
     "modality": ["shimmer", "body-tracking"],
     "number_of_labels": {"shimmer":  3, "body-tracking":  3}
   },
+  "fusion_config": {
+      "mode": "end-to-end",
+      "publisher": true
+  },
   "shimmer": {
       "inference_config": {
         "mode": "end-to-end",
