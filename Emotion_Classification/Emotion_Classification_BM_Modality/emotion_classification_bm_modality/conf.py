@@ -38,16 +38,11 @@ if os.path.exists(PATH_CUSTOM_SETTINGS):
 
 DATA_PATH = os.path.join(DATASETS_FOLDER, CUSTOM_SETTINGS["dataset_config"]["dataset_name"])
 
-# Define components outputs folder
+
 MODALITY = CUSTOM_SETTINGS["dataset_config"].get("modality", "default_modality")
 
 if type(MODALITY) is list and "shimmer" in MODALITY:
     MODALITY = "shimmer"
-
-# if "modality" in CUSTOM_SETTINGS["dataset_config"]:
-#     modality = CUSTOM_SETTINGS["dataset_config"]["modality"]
-# else:
-#     modality = "default_modality"
 
 MODALITY_FOLDER = os.path.join(
     OUTPUTS_FOLDER,

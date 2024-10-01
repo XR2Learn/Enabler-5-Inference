@@ -7,13 +7,14 @@ import tensorflow as tf
 
 from conf import (
     CUSTOM_SETTINGS,
+    MODALITY,
     MODALITY_FOLDER,
     EXPERIMENT_ID,
     ID_TO_LABEL,
     REDIS_HOST,
-    REDIS_PORT
+    REDIS_PORT,
+    PUBLISHER_ON
 )
-from emotion_classification_body_tracking_modality.conf import PUBLISHER_ON
 from emotionpubsub import init_redis_emocl_pubsub
 
 
@@ -35,17 +36,14 @@ def predict():
     logger.info("User configurations:")
     logger.info(json.dumps(CUSTOM_SETTINGS, indent=4))
 
-    modality = CUSTOM_SETTINGS['dataset_config']['modality'] if (
-            'modality' in CUSTOM_SETTINGS['dataset_config']
-    ) else 'default_modality'
     ckpt_name = (
         f"{EXPERIMENT_ID}_"
         f"{CUSTOM_SETTINGS['dataset_config']['dataset_name']}_"
-        f"{modality}"
+        f"{MODALITY}"
     )
 
     if (
-            CUSTOM_SETTINGS["inference_config"]["mode"] == "features" and
+            CUSTOM_SETTINGS[MODALITY]["inference_config"]["mode"] == "features" and
             PUBLISHER_ON
     ):
         raise ValueError("""
@@ -55,9 +53,9 @@ def predict():
 
     # Initialize models:
     # mode == end-to-end: use fine-tuned model from pre-processed data
-    if CUSTOM_SETTINGS["inference_config"]["mode"] == "end-to-end":
+    if CUSTOM_SETTINGS[MODALITY]["inference_config"]["mode"] == "end-to-end":
         # get checkpoint path
-        if "model_path" not in CUSTOM_SETTINGS["inference_config"]:
+        if "model_path" not in CUSTOM_SETTINGS[MODALITY]["inference_config"]:
             supervised_model_checkpoint_path = os.path.join(
                 MODALITY_FOLDER,
                 "supervised_training",
@@ -72,14 +70,14 @@ def predict():
         emocl_pubsub = init_redis_emocl_pubsub(
             REDIS_HOST,
             REDIS_PORT,
-            modality,
-            f"{modality}_data_stream",
-            f"{modality}_data",
+            MODALITY,
+            f"{MODALITY}_data_stream",
+            f"{MODALITY}_data",
             model,
             logger,
             ID_TO_LABEL
         )
-        logging.info(f"Listening to {modality}_data_stream channel...")
+        logging.info(f"Listening to {MODALITY}_data_stream channel...")
         emocl_pubsub.start_processing()
     else:
         raise ValueError("Only pub/sub inference is implemented.")

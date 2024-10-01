@@ -7,6 +7,7 @@ import pandas as pd
 
 from conf import (
     CUSTOM_SETTINGS,
+    MODALITY,
     REDIS_HOST,
     REDIS_PORT
 )
@@ -24,17 +25,17 @@ from utils.utils import init_logger, get_files
 
 def launch_processing():
     logger = init_logger()
-    monitor_directory = CUSTOM_SETTINGS["inference_config"]["data_processing"]["monitor_directory"]
+    monitor_directory = CUSTOM_SETTINGS[MODALITY]["inference_config"]["data_processing"]["monitor_directory"]
 
-    delay = CUSTOM_SETTINGS["inference_config"]["data_processing"]["reading_delay"]
+    delay = CUSTOM_SETTINGS[MODALITY]["inference_config"]["data_processing"]["reading_delay"]
 
-    window_size = CUSTOM_SETTINGS["pre_processing_config"]["seq_len"] *\
-        CUSTOM_SETTINGS["pre_processing_config"]["frequency"]
+    window_size = CUSTOM_SETTINGS[MODALITY]["pre_processing_config"]["seq_len"] *\
+        CUSTOM_SETTINGS[MODALITY]["pre_processing_config"]["frequency"]
 
     data_publisher = init_redis_data_publisher(
         REDIS_HOST,
         REDIS_PORT,
-        CUSTOM_SETTINGS["dataset_config"]["modality"],
+        MODALITY,
         logger
     )
 
@@ -45,7 +46,7 @@ def launch_processing():
         # Get the list of files with the specified suffix
         files = get_files(
             monitor_directory,
-            CUSTOM_SETTINGS["inference_config"]["data_processing"]["modality_suffix"]
+            CUSTOM_SETTINGS[MODALITY]["inference_config"]["data_processing"]["modality_suffix"]
         )
 
         files = [
@@ -119,7 +120,7 @@ def launch_processing():
                     processed_files.add(filename)
                     break
 
-        time.sleep(CUSTOM_SETTINGS["inference_config"]["data_processing"]["reading_delay"])
+        time.sleep(CUSTOM_SETTINGS[MODALITY]["inference_config"]["data_processing"]["reading_delay"])
 
 
 if __name__ == "__main__":
