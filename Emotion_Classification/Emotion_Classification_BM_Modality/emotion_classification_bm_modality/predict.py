@@ -67,6 +67,9 @@ def predict():
                          and running inference processing. Please, use 'end-to-end' mode".
                          """)
 
+    num_classes = CUSTOM_SETTINGS['dataset_config'].get("number_of_labels", 3)
+    if isinstance(num_classes, dict):
+        num_classes = num_classes.get(MODALITY, 3)
     # Initialize models:
     # mode == features: use SSL features saved to npy and pass them through classifier
     if CUSTOM_SETTINGS[MODALITY]["inference_config"]["mode"] == "features":
@@ -83,7 +86,7 @@ def predict():
             )
         ).size
         # initialize classifier from supervised model
-        model = LinearClassifier(features_size, CUSTOM_SETTINGS["dataset_config"]["number_of_labels"][MODALITY])
+        model = LinearClassifier(features_size, num_classes)
         model.load_state_dict(
             torch.load(os.path.join(MODALITY_FOLDER, "supervised_training", f"{ckpt_name}_classifier.pt")))
         transforms = None
@@ -101,7 +104,7 @@ def predict():
             supervised_model_checkpoint_path = CUSTOM_SETTINGS[MODALITY]["inference_config"]["model_path"]
         # initialize the model
         encoder = init_encoder(model_cfg=CUSTOM_SETTINGS[MODALITY]["encoder_config"])
-        classifier = LinearClassifier(encoder.out_size, CUSTOM_SETTINGS["dataset_config"]["number_of_labels"][MODALITY])
+        classifier = LinearClassifier(encoder.out_size, num_classes)
         model = SupervisedModel.load_from_checkpoint(
             supervised_model_checkpoint_path + ".ckpt",
             encoder=encoder,
