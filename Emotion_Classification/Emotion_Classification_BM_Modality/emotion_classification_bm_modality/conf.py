@@ -37,18 +37,18 @@ if os.path.exists(PATH_CUSTOM_SETTINGS):
         CUSTOM_SETTINGS = json.load(f)
 
 DATA_PATH = os.path.join(DATASETS_FOLDER, CUSTOM_SETTINGS["dataset_config"]["dataset_name"])
-# Define components outputs folder
-if "modality" in CUSTOM_SETTINGS["dataset_config"]:
-    modality = CUSTOM_SETTINGS["dataset_config"]["modality"]
-else:
-    modality = "default_modality"
+
+
+MODALITY = CUSTOM_SETTINGS["dataset_config"].get("modality", "default_modality")
+
+if type(MODALITY) is list and "shimmer" in MODALITY:
+    MODALITY = "shimmer"
 
 MODALITY_FOLDER = os.path.join(
     OUTPUTS_FOLDER,
     CUSTOM_SETTINGS["dataset_config"]["dataset_name"],
-    modality,
+    MODALITY,
 )
-
 
 BM_LABEL_TO_EMOTION = {
     "01": "BORED",
@@ -67,4 +67,5 @@ ID_TO_LABEL = {
     2: "FRUSTRATED"
 }
 
-PUBLISHER_ON = config('PUBLISHER_ON', default=CUSTOM_SETTINGS['inference_config'].get('publisher', False), cast=bool)
+PUBLISHER_ON = config('PUBLISHER_ON', default=CUSTOM_SETTINGS[MODALITY]['inference_config'].get('publisher', False),
+                      cast=bool)

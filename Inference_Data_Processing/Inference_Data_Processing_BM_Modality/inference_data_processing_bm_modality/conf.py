@@ -37,7 +37,12 @@ if os.path.exists(PATH_CUSTOM_SETTINGS):
         CUSTOM_SETTINGS = json.load(f)
 
 # Define components outputs folder
-if "modality" in CUSTOM_SETTINGS["dataset_config"]:
-    modality = CUSTOM_SETTINGS["dataset_config"]["modality"]
-else:
-    modality = "default_modality"
+# if "modality" in CUSTOM_SETTINGS["dataset_config"]:
+#     modality = CUSTOM_SETTINGS["dataset_config"]["modality"]
+# else:
+#     modality = "default_modality"
+
+MODALITY = CUSTOM_SETTINGS["dataset_config"].get("modality", "default_modality")
+
+if type(MODALITY) is list and "shimmer" in MODALITY:
+    MODALITY = "shimmer"

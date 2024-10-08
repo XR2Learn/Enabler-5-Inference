@@ -1,4 +1,3 @@
-version: '3'
 services:
   emotion-classification-audio:
     image: some.registry.com/xr2learn-enablers/ed-classification-audio:latest
@@ -128,8 +127,8 @@ services:
     depends_on:
       - redis
     
-  inference-data-processing-body_tracking:
-    image: some.registry.com/xr2learn-enablers/inference-data-processing-body_tracking:latest
+  inference-data-processing-body-tracking:
+    image: some.registry.com/xr2learn-enablers/inference-data-processing-body-tracking:latest
     build:
       context: 'Inference_Data_Processing/Inference_Data_Processing_Body_Tracking_Modality'
       dockerfile: 'Dockerfile'

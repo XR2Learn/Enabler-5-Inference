@@ -6,10 +6,10 @@ import numpy as np
 
 from conf import (
     CUSTOM_SETTINGS,
+    MODALITY,
     REDIS_HOST,
     REDIS_PORT
 )
-
 from data_publisher import init_redis_data_publisher
 from utils.processing_utils import (
     construct_windows,
@@ -25,18 +25,18 @@ from utils.utils import init_logger, get_files
 
 def launch_processing():
     logger = init_logger()
-    monitor_directory = CUSTOM_SETTINGS["inference_config"]["data_processing"]["monitor_directory"]
+    monitor_directory = CUSTOM_SETTINGS[MODALITY]["inference_config"]["data_processing"]["monitor_directory"]
 
-    delay = CUSTOM_SETTINGS["pre_processing_config"]["seq_len"] + \
-        CUSTOM_SETTINGS["inference_config"]["data_processing"]["reading_delay"]
+    delay = CUSTOM_SETTINGS[MODALITY]["pre_processing_config"]["seq_len"] + \
+            CUSTOM_SETTINGS[MODALITY]["inference_config"]["data_processing"]["reading_delay"]
 
-    window_size = CUSTOM_SETTINGS["pre_processing_config"]["seq_len"] * \
-        CUSTOM_SETTINGS["pre_processing_config"]["frequency"]
+    window_size = CUSTOM_SETTINGS[MODALITY]["pre_processing_config"]["seq_len"] * \
+                  CUSTOM_SETTINGS[MODALITY]["pre_processing_config"]["frequency"]
 
     data_publisher = init_redis_data_publisher(
         REDIS_HOST,
         REDIS_PORT,
-        CUSTOM_SETTINGS["dataset_config"]["modality"],
+        MODALITY,
         logger
     )
 
@@ -47,12 +47,12 @@ def launch_processing():
         # Get the list of files with the specified suffix
         files = get_files(
             monitor_directory,
-            CUSTOM_SETTINGS["inference_config"]["data_processing"]["modality_suffix"]
+            CUSTOM_SETTINGS[MODALITY]["inference_config"]["data_processing"]["modality_suffix"]
         )
 
         files = [
             os.path.join(monitor_directory, file) for file in files if (
-                os.path.join(monitor_directory, file) not in processed_files
+                    os.path.join(monitor_directory, file) not in processed_files
             )
         ]
         files.sort()
@@ -70,7 +70,7 @@ def launch_processing():
             # ts_idx = [i for i, col in enumerate(header) if col == "timestamp"]
             col_idx = [
                 i for i, col in enumerate(header) if (
-                    col in CUSTOM_SETTINGS["pre_processing_config"]["use_sensors"]
+                        col in CUSTOM_SETTINGS[MODALITY]["pre_processing_config"]["use_sensors"]
                 )
             ]
             last_position = 0
@@ -83,11 +83,12 @@ def launch_processing():
                 if new_data:
                     new_data = np.stack(new_data)[:, col_idx].astype(float)
 
-                    if CUSTOM_SETTINGS["pre_processing_config"]["resample_freq"] != CUSTOM_SETTINGS["pre_processing_config"]["frequency"]:
+                    if CUSTOM_SETTINGS[MODALITY]["pre_processing_config"]["resample_freq"] != \
+                            CUSTOM_SETTINGS[MODALITY]["pre_processing_config"]["frequency"]:
                         resample_bm(
                             new_data,
-                            CUSTOM_SETTINGS["pre_processing_config"]["frequency"],
-                            CUSTOM_SETTINGS["pre_processing_config"]["resample_freq"]
+                            CUSTOM_SETTINGS[MODALITY]["pre_processing_config"]["frequency"],
+                            CUSTOM_SETTINGS[MODALITY]["pre_processing_config"]["resample_freq"]
                         )
 
                     preprocessing_functions = {
@@ -104,11 +105,11 @@ def launch_processing():
                             f"Buffer size {len(buffer)}"
                         )
                         preprocessed, running_params = preprocessing_functions[
-                            CUSTOM_SETTINGS["pre_processing_config"]["process"]
+                            CUSTOM_SETTINGS[MODALITY]["pre_processing_config"]["process"]
                         ](windows, running_params)
 
                         logging.info(
-                            f"Pre-processing: '{CUSTOM_SETTINGS['pre_processing_config']['process']}' applied."
+                            f"Pre-processing: '{CUSTOM_SETTINGS[MODALITY]['pre_processing_config']['process']}' applied."
                             f"Obtained batches shape: {preprocessed.shape}"
                         )
                         for window in preprocessed:
@@ -132,7 +133,7 @@ def launch_processing():
                     processed_files.add(filename)
                     break
 
-        time.sleep(CUSTOM_SETTINGS["inference_config"]["data_processing"]["reading_delay"])
+        time.sleep(CUSTOM_SETTINGS[MODALITY]["inference_config"]["data_processing"]["reading_delay"])
 
 
 if __name__ == "__main__":
