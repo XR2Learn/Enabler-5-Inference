@@ -10,8 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Inference body-tracking components:
-  - Inference data processing from Magic XRoom
-  - Emotion classification inference using model checkpoint (the checkpoint trained model is not using handcrafted features from the training tools)
+    - Inference data processing from Magic XRoom
+    - Emotion classification inference using model checkpoint (the checkpoint trained model is not using handcrafted
+      features from the training tools)
 - Fusion Layer support for multimodalities of XRoom dataset (bio-measurements and body-tracking modalities)
 - Unittests for Fusion Layer component
 - Issue template for bug report and feature request.
@@ -21,13 +22,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update mock writer to work with two modalities: shimmer and vr (body-tracking)
 - Fusion Layer implementation for uni/multimodal: now take into account the data window (frequency * seq_len)
 - Configuration file structure to encompass multimodality capability
-- Body Tracking Classification now use Pytorch instead of Tensorflow library. 
+- Body Tracking Classification now use Pytorch instead of Tensorflow library.
 - Many refactors
 
 ### Removed
 
 - Support for non-streaming inference for BM and body tracking modalities (XRoom dataset)
-
+- ED_Evaluation component. Inference tools are tools for supporting real world deployment of tools, so a component for
+  evaluation is not part of the scope for these tools.
 
 ## [0.6.0] - 2024 - 07 - 24
 
