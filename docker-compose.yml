@@ -68,21 +68,6 @@ services:
     depends_on:
       - redis
 
-  ed-evaluation:
-    image: some.registry.com/xr2learn-enablers/ed-evaluation:latest
-    build:
-      context: 'ED_Evaluation/ED_Evaluation'
-      dockerfile: 'Dockerfile'
-    volumes:
-      - "./ED_Evaluation/ED_Evaluation:/app"
-      - "./datasets:/app/datasets"
-      - "./outputs:/app/outputs"
-      - "${CONFIG_FILE_PATH:-./configuration.json}:/app/configuration.json"
-    working_dir: /app
-    environment:
-      - EXPERIMENT_ID=${EXPERIMENT_ID:-development-model}
-    command: python ed_evaluation/evaluate.py
-
   redis:
     image: redis:7.2.2
     ports:
