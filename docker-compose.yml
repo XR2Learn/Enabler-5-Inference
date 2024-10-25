@@ -1,6 +1,6 @@
 services:
   emotion-classification-audio:
-    image: some.registry.com/xr2learn-enablers/ed-classification-audio:latest
+    image: ghcr.io/xr2learn/ed-classification-audio:latest
     build:
       context: 'Emotion_Classification/Emotion_Classification_Audio_Modality'
       dockerfile: 'Dockerfile'
@@ -15,7 +15,7 @@ services:
     command: python emotion_classification_audio_modality/predict.py
   
   emotion-classification-bm:
-    image: some.registry.com/xr2learn-enablers/ed-classification-bm:latest
+    image: ghcr.io/xr2learn/ed-classification-bm:latest
     build:
       context: 'Emotion_Classification/Emotion_Classification_BM_Modality'
       dockerfile: 'Dockerfile'
@@ -33,7 +33,7 @@ services:
       - redis
 
   emotion-classification-body-tracking:
-    image: some.registry.com/xr2learn-enablers/emotion-classification-body-tracking:latest
+    image: ghcr.io/xr2learn/emotion-classification-body-tracking:latest
     build:
       context: 'Emotion_Classification/Emotion_Classification_Body_Tracking_Modality'
       dockerfile: 'Dockerfile'
@@ -51,7 +51,7 @@ services:
       - redis
 
   fusion-layer:
-    image: some.registry.com/xr2learn-enablers/fusion-layer:latest
+    image: ghcr.io/xr2learn/fusion-layer:latest
     build:
       context: 'Multimodal_Fusion/Multimodal_Fusion_Layer'
       dockerfile: 'Dockerfile'
@@ -74,7 +74,7 @@ services:
       - "6379:6379"
 
   personalization-tool:
-    image: some.registry.com/xr2learn-enablers/personalization-tool:latest
+    image: ghcr.io/xr2learn/personalization-tool:latest
     working_dir: /app
     environment:
       - REDIS_HOST=redis
@@ -83,7 +83,7 @@ services:
       - redis
 
   dashboard:
-    image: some.registry.com/xr2learn-enablers/dashboard:latest
+    image: ghcr.io/xr2learn/dashboard:latest
     working_dir: /app
     environment:
       - REDIS_HOST=redis
@@ -95,7 +95,7 @@ services:
       - "8000:8000"
 
   inference-data-processing-bm:
-    image: some.registry.com/xr2learn-enablers/inference-data-processing-bm:latest
+    image: ghcr.io/xr2learn/inference-data-processing-bm:latest
     build:
       context: 'Inference_Data_Processing/Inference_Data_Processing_BM_Modality'
       dockerfile: 'Dockerfile'
@@ -113,7 +113,7 @@ services:
       - redis
     
   inference-data-processing-body-tracking:
-    image: some.registry.com/xr2learn-enablers/inference-data-processing-body-tracking:latest
+    image: ghcr.io/xr2learn/inference-data-processing-body-tracking:latest
     build:
       context: 'Inference_Data_Processing/Inference_Data_Processing_Body_Tracking_Modality'
       dockerfile: 'Dockerfile'
@@ -131,7 +131,7 @@ services:
       - redis
 
   mock-xroom-writer:
-    image: some.registry.com/xr2learn-enablers/mock-xroom-writer:latest
+    image: ghcr.io/xr2learn/mock-xroom-writer:latest
     build:
       context: 'Mock_XRoom_Writer/Mock_XRoom_Writer_BM_BT_Modality'
       dockerfile: 'Dockerfile'

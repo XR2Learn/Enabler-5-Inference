@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fusion Layer support for multi modalities of XRoom dataset (bio-measurements and body-tracking modalities)
 - Unittests for Fusion Layer component
 - Issue template for bug report and feature request.
+- Docker containers registry
 
 ### Changed
 
