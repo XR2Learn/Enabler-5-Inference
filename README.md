@@ -21,8 +21,6 @@ component.
 **Multimodal Fusion**: a component to execute a decision-level emotion detection multimodal fusion, i.e., to compute the
 combination of emotions from different modalities.
 
-**Evaluation**: a component to evaluate a uni/multimodal emotion detection model according to different evaluation
-metrics.
 
 ## Dependencies
 
@@ -50,15 +48,14 @@ version of “configuration.json” is provided and can be changed by the user.
 i.e., audio, bio-measurements (bm), body movements, are deployed in separated docker containers and their service name
 follow the structure:
 
-1. emotion-classification-MODALITY
+1. emotion-classification-<MODALITY>
 2. fusion-layer
-3. ed-evaluation
 
 **Note 2**: Some additional services can be found in the Inference domain “docker-compose.yml” file, namely:
 
 - redis
-- personalisation-tool
-- demo-ui
+- personalization-tool
+- dashboard
 
 These services are present in the Inference domain to facilitate development and are explained in detail in the
 following section, Personalization Tool.
@@ -68,11 +65,11 @@ There is an additional script to run all the docker images from a given modality
 
 1. For Unix-based OS, MacOS and Linux:
 
-`./run_all_dockers.sh`
+`./supporting_scripts/run_all_dockers-<MODALITY>.sh`
 
 2. For Windows:
 
-`./run_all_dockers.ps1`
+`./supporting_scripts/run_all_dockers.ps1`
 
 ## Additional Useful Commands:
 

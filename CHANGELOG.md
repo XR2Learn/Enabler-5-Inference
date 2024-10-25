@@ -7,13 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2024 - 10 - 25
 ### Added
 
 - Inference body-tracking components:
     - Inference data processing from Magic XRoom
     - Emotion classification inference using model checkpoint (the checkpoint trained model is not using handcrafted
       features from the training tools)
-- Fusion Layer support for multimodalities of XRoom dataset (bio-measurements and body-tracking modalities)
+- Fusion Layer support for multi modalities of XRoom dataset (bio-measurements and body-tracking modalities)
 - Unittests for Fusion Layer component
 - Issue template for bug report and feature request.
 
@@ -167,3 +168,5 @@ Example of Categories to use in each release
 [0.5.0]: https://github.com/XR2Learn/Enabler-5-Inference/releases/tag/v0.5.0
 
 [0.6.0]: https://github.com/XR2Learn/Enabler-5-Inference/releases/tag/v0.6.0
+
+[1.0.0]: https://github.com/XR2Learn/Enabler-5-Inference/releases/tag/v1.0.0
