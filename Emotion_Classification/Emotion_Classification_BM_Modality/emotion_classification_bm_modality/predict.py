@@ -109,6 +109,7 @@ def predict():
             supervised_model_checkpoint_path + ".ckpt",
             encoder=encoder,
             classifier=classifier,
+            strict=False
         )
         if "transforms" in CUSTOM_SETTINGS[MODALITY]:
             transforms, _ = init_transforms(CUSTOM_SETTINGS[MODALITY]["transforms"])

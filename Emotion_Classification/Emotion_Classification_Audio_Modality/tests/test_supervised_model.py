@@ -224,7 +224,8 @@ class SupervisedTestCase(unittest.TestCase):
                 supervised_model_loaded_lightning = SupervisedModel.load_from_checkpoint(
                     model_path,
                     encoder=new_encoder,
-                    classifier=new_classifier
+                    classifier=new_classifier,
+                    strict=False
                 )
 
                 # one way to check if models are the same is to check if they produce the same output for the same input

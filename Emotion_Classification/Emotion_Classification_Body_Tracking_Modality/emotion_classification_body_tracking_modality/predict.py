@@ -81,6 +81,7 @@ def predict():
             supervised_model_checkpoint_path + ".ckpt",
             encoder=encoder,
             classifier=classifier,
+            strict=False
         )
     else:
         raise ValueError("Unexpected inference mode.")
