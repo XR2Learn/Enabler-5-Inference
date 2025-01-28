@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Fixed
 - Fix issue with not relevant parameters in state_dict (such as loss.weight), which was making not compatible with Personalization Enablers Training v1.2.0
+- Mock XRoom Writer input files examples using the Magic XRoom data format (v1.1.0)
 
 ## [1.0.0] - 2024 - 10 - 25
 ### Added
