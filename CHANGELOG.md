@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- Fix issue with not relevant parameters in state_dict (such as loss.weight), which was making not compatible with Personalization Enablers Training v1.2.0
 
 ## [1.0.0] - 2024 - 10 - 25
 ### Added
